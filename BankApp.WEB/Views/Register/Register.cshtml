@@ -17,7 +17,7 @@
             <h1 class="logo">Bank</h1>
             <ul class="nav__menu">
                 <li class="home__button">
-                    <a href="#">
+                    <a asp-action="Index" asp-controller="Home">
                         Home
                     </a>
                 </li>
@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li class="sign-in">
-                    <a href="#">
+                    <a asp-action="Index" asp-controller="Login">
                         Sign in
                     </a>
                 </li>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="signup-image">
                     <figure><img src="~/img/signup-image.jpg" alt="sing up image"></figure>
-                    <a href="#" class="signup-image-link">I am already member</a>
+                    <a asp-action="Index" asp-controller="Login" class="signup-image-link">I am already member</a>
                 </div>
             </div>
         </div>
