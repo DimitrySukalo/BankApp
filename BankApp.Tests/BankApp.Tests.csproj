@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Tests\" />
+    <ProjectReference Include="..\BankApp.WEB\BankApp.WEB.csproj" />
   </ItemGroup>
 
 </Project>

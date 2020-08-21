@@ -1,0 +1,178 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Khand', sans-serif;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.header {
+    background: url('../img/header-bg.jpg') no-repeat center top / cover;
+    height: 100vh;
+
+}
+
+.container {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.logo {
+    font-size: 48px;
+    text-transform: uppercase;
+}
+
+.header__menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav__menu li {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-right: 80px;
+}
+
+.sign-up {
+    margin-right: 0;
+}
+
+.nav__menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    margin-left: 120px;
+}
+
+.header__title {
+    text-transform: uppercase;
+    font-size: 100px;
+    width: 400px;
+    margin-top: 177px;
+    line-height: 1.2em;
+}
+
+.start {
+    display: block;
+    text-align: center;
+    background: #d3d3d3;
+    opacity: 80%;
+    margin-top: 48px;
+    padding-top: 50px;
+    width: 540px;
+    height: 150px;
+    font-size: 72px;
+}
+
+.start:hover {
+    transition: 0.5s;
+    opacity: 100%;
+}
+
+.sect1 {
+    background: url('../img/sect1-bg.jpg') no-repeat center top / cover;
+    height: 100vh;
+}
+
+.quality__content {
+    text-align: center;
+}
+
+.quality__title-1 {
+    text-transform: uppercase;
+    font-size: 72px;
+    padding-top: 15px;
+}
+
+.quality__text-backroung {
+    background: #ffffff;
+    border-radius: 25%;
+}
+
+.quality__text {
+    margin-top: -10px;
+    font-size: 14px;
+    text-align: justify;
+    width: 300px;
+    margin-left: 350px;
+}
+
+.quality__logo {
+    margin-top: 14px;
+}
+
+.arrow-1 {
+    margin-top: 8px;
+}
+
+.quality__title-2 {
+    font-size: 72px;
+    text-transform: uppercase;
+}
+
+.transaction__text-bg {
+    background: #ffffff;
+    border-radius: 25%;
+}
+
+.fast__text {
+    font-size: 14px;
+    margin-top: -10px;
+    text-align: justify;
+    width: 300px;
+    margin-left: 350px;
+}
+
+.fast__logo {
+    margin-top: 18px;
+}
+
+.sect2 {
+    background: url('../img/sect2-bg.jpg') no-repeat center top / cover;
+    height: 100vh;
+}
+
+.section2__content {
+    text-align: center;
+}
+
+.about__title {
+    padding-top: 20px;
+    font-size: 72px;
+}
+
+.about__text {
+    text-align: justify;
+}
+
+.photos {
+    margin-top: 100px;
+    display: flex;
+}
+
+.people__photo-2 {
+    margin-left: 100px;
+}
+
+.footer__content {
+    background: #e2e2e2;
+    text-align: center;
+}
+
+.copyright__text {
+    padding: 0;
+    margin: 0;
+}
