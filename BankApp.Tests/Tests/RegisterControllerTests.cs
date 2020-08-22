@@ -1,5 +1,8 @@
-﻿using BankApp.WEB.Controllers;
+﻿using BankApp.BLL.Interfaces;
+using BankApp.PL.ViewModels;
+using BankApp.WEB.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Xunit;
 
 namespace BankApp.Tests.Tests
@@ -10,10 +13,28 @@ namespace BankApp.Tests.Tests
         private void IndexViewTests()
         {
             //Arrange
-            var registerController = new RegisterController();
+            var mock = new Mock<IRegisterService>();
+            var registerController = new RegisterController(mock.Object);
 
             //Act
             var result = registerController.Index() as ViewResult;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal("Register", result?.ViewName);
+        }
+
+        [Fact]
+        private void RegisterUserReturnsViewResultWithRegisterModel()
+        {
+            //Arrange
+            var registerMock = new Mock<IRegisterService>();
+            var registerController = new RegisterController(registerMock.Object);
+            RegisterViewModel registerViewModel = null;
+
+
+            //Act
+            var result = registerController.RegisterAccount(registerViewModel) as ViewResult;
 
             //Assert
             Assert.NotNull(result);

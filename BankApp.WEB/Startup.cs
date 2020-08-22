@@ -1,6 +1,12 @@
+using BankApp.BLL.Interfaces;
+using BankApp.BLL.Services;
+using BankApp.DAL.Entities;
 using BankApp.DAL.Entity;
+using BankApp.DAL.Interfaces;
+using BankApp.DAL.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +30,19 @@ namespace BankApp.WEB
 
             //Connecting to the database
             services.AddDbContext<BankContext>(options => options.UseSqlServer(connectionString));
+
+            //Adding identity
+            services.AddIdentity<User, IdentityRole>(opt => { 
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.User.RequireUniqueEmail = true;
+            }).AddEntityFrameworkStores<BankContext>().AddDefaultTokenProviders();
+
+            //Adding register service for registration ability
+            services.AddTransient<IRegisterService, RegisterService>();
+
+            //Adding unit of work
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+
             services.AddControllersWithViews();
         }
 

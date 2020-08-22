@@ -20,7 +20,6 @@ namespace BankApp.DAL.Entity
         /// </summary>
         public BankContext(DbContextOptions<BankContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
     }
 }
