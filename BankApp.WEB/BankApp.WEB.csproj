@@ -14,4 +14,10 @@
     <PackageReference Include="Moq" Version="4.14.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BankApp.BLL\BankApp.BLL.csproj" />
+    <ProjectReference Include="..\BankApp.DAL\BankApp.DAL.csproj" />
+    <ProjectReference Include="..\BankApp.PL\BankApp.PL.csproj" />
+  </ItemGroup>
+
 </Project>

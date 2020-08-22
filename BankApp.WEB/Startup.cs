@@ -1,5 +1,7 @@
+using BankApp.DAL.Entity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -17,6 +19,11 @@ namespace BankApp.WEB
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //Connection string to the database
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            //Connecting to the database
+            services.AddDbContext<BankContext>(options => options.UseSqlServer(connectionString));
             services.AddControllersWithViews();
         }
 
