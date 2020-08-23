@@ -13,8 +13,10 @@ namespace BankApp.Tests.Tests
         private void IndexViewTests()
         {
             //Arrange
-            var mock = new Mock<IRegisterService>();
-            var registerController = new RegisterController(mock.Object);
+            var serviceMock = new Mock<IRegisterService>();
+            var emailMock = new Mock<ISendEmailService>();
+
+            var registerController = new RegisterController(serviceMock.Object, emailMock.Object);
 
             //Act
             var result = registerController.Index() as ViewResult;
@@ -28,8 +30,9 @@ namespace BankApp.Tests.Tests
         private void RegisterUserReturnsViewResultWithRegisterModel()
         {
             //Arrange
-            var registerMock = new Mock<IRegisterService>();
-            var registerController = new RegisterController(registerMock.Object);
+            var serviceMock = new Mock<IRegisterService>();
+            var emailMock = new Mock<ISendEmailService>();
+            var registerController = new RegisterController(serviceMock.Object, emailMock.Object);
             RegisterViewModel registerViewModel = null;
 
 

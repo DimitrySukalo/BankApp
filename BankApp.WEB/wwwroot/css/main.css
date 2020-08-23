@@ -181,3 +181,9 @@ a {
     font-weight: 400;
     color: red;
 }
+
+.confirm__message {
+    text-align: center;
+    font-size: 24px;
+    margin-top: 20px;
+}

@@ -13,11 +13,6 @@ namespace BankApp.DAL.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         /// <summary>
-        /// Database
-        /// </summary>
-        private readonly BankContext db;
-
-        /// <summary>
         /// Sign in manager
         /// </summary>
         public SignInManager<User> SignInManager { get; }
@@ -26,6 +21,11 @@ namespace BankApp.DAL.Repositories
         /// User manager
         /// </summary>
         public UserManager<User> UserManager { get; }
+
+        /// <summary>
+        /// Database
+        /// </summary>
+        public BankContext Database { get; }
 
         /// <summary>
         /// Initialization
@@ -49,7 +49,7 @@ namespace BankApp.DAL.Repositories
 
             UserManager = userManager;
             SignInManager = signInManager;
-            db = context;
+            Database = context;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace BankApp.DAL.Repositories
         /// <returns></returns>
         public async Task SaveAsync()
         {
-            await db.SaveChangesAsync();
+            await Database.SaveChangesAsync();
         }
     }
 }

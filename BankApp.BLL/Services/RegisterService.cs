@@ -14,9 +14,9 @@ namespace BankApp.BLL.Services
     public class RegisterService : IRegisterService
     {
         /// <summary>
-        /// IUnitOfWork
+        /// Unit of work
         /// </summary>
-        private readonly IUnitOfWork unitOfWork;
+        public IUnitOfWork UnitOfWork { get; }
 
         /// <summary>
         /// Initialization
@@ -27,8 +27,7 @@ namespace BankApp.BLL.Services
             {
                 throw new ArgumentNullException(nameof(unitOfWork), " was null.");
             }
-
-            this.unitOfWork = unitOfWork;
+            UnitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -51,12 +50,12 @@ namespace BankApp.BLL.Services
                 if(user != null)
                 {
                     //Result of user registration
-                    var result = unitOfWork.UserManager.CreateAsync(user, user.Password).Result;
+                    var result = UnitOfWork.UserManager.CreateAsync(user, user.Password).Result;
 
                     if (result.Succeeded)
                     {
                         //Saving changes in the database
-                         unitOfWork.SaveAsync();
+                        UnitOfWork.SaveAsync();
 
                         return result;
                     }
