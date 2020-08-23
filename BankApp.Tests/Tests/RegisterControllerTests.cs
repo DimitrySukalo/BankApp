@@ -43,5 +43,24 @@ namespace BankApp.Tests.Tests
             Assert.NotNull(result);
             Assert.Equal("Register", result?.ViewName);
         }
+
+        [Fact]
+        private void ConfirmEmailReturnsUserIsNull()
+        {
+            //Arrange
+            var serviceMock = new Mock<IRegisterService>();
+            var emailMock = new Mock<ISendEmailService>();
+            var registerController = new RegisterController(serviceMock.Object, emailMock.Object);
+
+            string userId = null;
+            string code = null;
+
+            //Act
+            var result = registerController.ConfirmEmail(userId, code) as ContentResult;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal("Error", result?.Content);
+        }
     }
 }
