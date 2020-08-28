@@ -1,4 +1,6 @@
-﻿@{
+﻿@model BankApp.DAL.Entities.User
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -16,32 +18,48 @@
         <div class="container">
             <div class="header__menu">
                 <h1 class="logo">Bank</h1>
-                <ul class="nav__menu">
+                <ul class="nav__menu" id="nav__menu">
                     <li class="home__button">
-                        <a href="#">
+                        <a asp-action="Index" asp-controller="Home">
                             Home
                         </a>
                     </li>
                     <li class="about__button">
-                        <a href="#">
+                        <a href="#sect2">
                             About us
                         </a>
                     </li>
                     <li class="contacts__button">
-                        <a href="#">
+                        <a href="#sect3">
                             Contacts
                         </a>
                     </li>
-                    <li class="sign-in">
-                        <a asp-action="Index" asp-controller="Login">
-                            Sign in
-                        </a>
-                    </li>
-                    <li class="sign-up">
-                        <a asp-action="Index" asp-controller="Register">
-                            Sign up
-                        </a>
-                    </li>
+                    @if (Model == null)
+                    {
+                        <li class="sign-in">
+                            <a asp-action="Index" asp-controller="Login">
+                                Sign in
+                            </a>
+                        </li>
+                        <li class="sign-up">
+                            <a asp-action="Index" asp-controller="Register">
+                                Sign up
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="sign-in">
+                            <a href="#">
+                                Profile
+                            </a>
+                        </li>
+                        <li class="sign-up">
+                            <a asp-action="Index" asp-controller="Login">
+                                Logout
+                            </a>
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="header__content">
@@ -85,7 +103,7 @@
             </div>
         </div>
     </section>
-    <section class="sect2">
+    <section class="sect2" id="sect2">
         <div class="container">
             <div class="section2__content">
                 <h1 class="about__title">Our history</h1>
@@ -107,10 +125,78 @@
             </div>
         </div>
     </section>
+    <section class="sect3" id="sect3">
+        <div class="container__sect3">
+            <div class="section3__content">
+                <h1 class="contacts__title">Our contacts</h1>
+                <div class="contact__forms">
+                    <div class="message__form">
+                        <form method="post">
+                            <div class="input__form">
+                                <ul class="form-style-1">
+                                    <li><label>Full Name <span class="required">*</span></label><input type="text" class="field-divided" placeholder="First" /> <input type="text" class="field-divided" placeholder="Last" /></li>
+                                    <li>
+                                        <label>Email <span class="required">*</span></label>
+                                        <input type="email" class="field-long" />
+                                    </li>
+                                    <li>
+                                        <label>Your Message <span class="required">*</span></label>
+                                        <textarea id="field5" class="field-long field-textarea"></textarea>
+                                    </li>
+                                    <li>
+                                        <input type="submit" value="Submit" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="sect3__img">
+                        <img class="img__write" src="~/img/sect3-img.jpg" alt="Write" />
+                    </div>
+                </div>
+                <div class="networks">
+                    <ul class="networks__list">
+                        <li class="twitter">
+                            <a href="#">
+                                <img src="~/img/twitter-icon.png" />
+                            </a>
+                        </li>
+                        <li class="facebook">
+                            <a href="#">
+                                <img src="~/img/facebook-icon.png" />
+                            </a>
+                        </li>
+                        <li class="vk">
+                            <a href="#">
+                                <img src="~/img/vk-icon.png" />
+                            </a>
+                        <li class="instagram">
+                            <a href="#">
+                                <img src="~/img/instagram-icon.png" />
+                            </a>
+                        <li class="telegram">
+                            <a href="#">
+                                <img src="~/img/telegram-icon.png" />
+                            </a>
+                        </li>
+                        <li class="youtube">
+                            <a href="#">
+                                <img src="~/img/youtube-icon.png" />
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
     <footer class="footer">
         <div class="footer__content">
             <p class="copyright__text">©2020 BANK - All rigths reserved</p>
         </div>
     </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

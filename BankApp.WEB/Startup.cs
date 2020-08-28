@@ -40,6 +40,9 @@ namespace BankApp.WEB
             //Adding register service for registration ability
             services.AddTransient<IRegisterService, RegisterService>();
 
+            //Adding login service
+            services.AddTransient<ILoginService, LoginService>();
+
             //Adding email service
             services.AddTransient<ISendEmailService, SendEmailService>();
 

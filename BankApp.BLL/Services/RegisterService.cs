@@ -33,19 +33,19 @@ namespace BankApp.BLL.Services
         /// <summary>
         /// Register user
         /// </summary>
-        public IdentityResult RegisterUserAsync(UserDTO userDTO)
+        public IdentityResult RegisterUser(UserRegisterDTO userDTO)
         {
             if(userDTO != null)
             {
                 //Mapper configuration
-                var configuration = new MapperConfiguration(cnf => cnf.CreateMap<UserDTO, User>()
+                var configuration = new MapperConfiguration(cnf => cnf.CreateMap<UserRegisterDTO, User>()
                                     .ForMember("UserName", opt => opt.MapFrom(dto => dto.Email)));
 
                 //Creating mapper
                 var mapper = new Mapper(configuration);
 
                 //Creating user
-                var user = mapper.Map<UserDTO, User>(userDTO);
+                var user = mapper.Map<UserRegisterDTO, User>(userDTO);
 
                 if(user != null)
                 {

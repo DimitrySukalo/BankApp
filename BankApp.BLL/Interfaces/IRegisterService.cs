@@ -12,7 +12,7 @@ namespace BankApp.BLL.Interfaces
         /// <summary>
         /// Register user
         /// </summary>
-        IdentityResult RegisterUserAsync(UserDTO userDTO);
+        IdentityResult RegisterUser(UserRegisterDTO userDTO);
 
         /// <summary>
         /// Unit of work

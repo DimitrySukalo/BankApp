@@ -47,6 +47,8 @@ namespace BankApp.WEB.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+            //Sign out user account
+            registerService.UnitOfWork.SignInManager.SignOutAsync();
             return View("Register");
         }
 
@@ -61,7 +63,7 @@ namespace BankApp.WEB.Controllers
             if(ModelState.IsValid)
             {
                 //Mapper configuration
-                var configuration = new MapperConfiguration(cnf => cnf.CreateMap<RegisterViewModel, UserDTO>());
+                var configuration = new MapperConfiguration(cnf => cnf.CreateMap<RegisterViewModel, UserRegisterDTO>());
 
                 //Creating mapper
                 var mapper = new Mapper(configuration);
@@ -69,11 +71,11 @@ namespace BankApp.WEB.Controllers
                 if (registerViewModel != null)
                 {
                     //Creating userDTO
-                    var userDTO = mapper.Map<RegisterViewModel, UserDTO>(registerViewModel);
+                    var userDTO = mapper.Map<RegisterViewModel, UserRegisterDTO>(registerViewModel);
 
                     if (userDTO != null || CheckEmailValidation(userDTO.Email))
                     {
-                        var result = registerService.RegisterUserAsync(userDTO);
+                        var result = registerService.RegisterUser(userDTO);
                         if(result.Succeeded)
                         {
                             //Actual user who want to register
@@ -154,7 +156,7 @@ namespace BankApp.WEB.Controllers
             else
             {
                 //Current user
-                var user = registerService.UnitOfWork.Database.Users.FirstOrDefaultAsync(u => u.Id == userId).Result;
+                var user = registerService.UnitOfWork.UserManager.FindByIdAsync(userId).Result;
                 if(user != null)
                 {
                     //Result of email confirmation
@@ -162,7 +164,7 @@ namespace BankApp.WEB.Controllers
                     if(result.Succeeded)
                     {
                         //Successed confirmation
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Login");
                     }
                     else
                     {
