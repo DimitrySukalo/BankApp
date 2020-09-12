@@ -1,4 +1,4 @@
-﻿@model BankApp.DAL.Entities.User
+﻿@model BankApp.PL.ViewModels.MultiplyHomeModels
 
 @{
     ViewData["Title"] = "Home Page";
@@ -34,7 +34,7 @@
                             Contacts
                         </a>
                     </li>
-                    @if (Model == null)
+                    @if (Model.User == null)
                     {
                         <li class="sign-in">
                             <a asp-action="Index" asp-controller="Login">
@@ -131,17 +131,18 @@
                 <h1 class="contacts__title">Our contacts</h1>
                 <div class="contact__forms">
                     <div class="message__form">
-                        <form method="post">
+                        <form asp-action="SendMessage" asp-controller="Home" method="post">
+                            <div class="data__validation" asp-validation-summary="All"></div>
                             <div class="input__form">
                                 <ul class="form-style-1">
-                                    <li><label>Full Name <span class="required">*</span></label><input type="text" class="field-divided" placeholder="First" /> <input type="text" class="field-divided" placeholder="Last" /></li>
+                                    <li><label>Full Name <span class="required">*</span></label><input asp-for="MessageViewModel.FirstName" type="text" class="field-divided" placeholder="First" /> <input asp-for="MessageViewModel.LastName" type="text" class="field-divided" placeholder="Last" /></li>
                                     <li>
                                         <label>Email <span class="required">*</span></label>
-                                        <input type="email" class="field-long" />
+                                        <input asp-for="MessageViewModel.Email" type="email" class="field-long" />
                                     </li>
                                     <li>
                                         <label>Your Message <span class="required">*</span></label>
-                                        <textarea id="field5" class="field-long field-textarea"></textarea>
+                                        <textarea asp-for="MessageViewModel.Message" id="field5" class="field-long field-textarea"></textarea>
                                     </li>
                                     <li>
                                         <input type="submit" value="Submit" />

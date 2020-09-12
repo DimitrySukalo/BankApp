@@ -16,6 +16,11 @@ namespace BankApp.DAL.Entity
         public DbSet<Country> Countries { get; set; }
 
         /// <summary>
+        /// User messages
+        /// </summary>
+        public DbSet<UserMessage> Messages { get; set; }
+
+        /// <summary>
         /// Creating database
         /// </summary>
         public BankContext(DbContextOptions<BankContext> options) : base(options)

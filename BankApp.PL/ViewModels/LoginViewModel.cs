@@ -10,13 +10,13 @@ namespace BankApp.PL.ViewModels
         /// <summary>
         /// User email
         /// </summary>
-        [Required(ErrorMessage = "Email is not field")]
+        [Required(ErrorMessage = "Email is not filled")]
         public string Email { get; set; }
 
         /// <summary>
         /// User password
         /// </summary>
-        [Required(ErrorMessage = "Password is not field")]
+        [Required(ErrorMessage = "Password is not filled")]
         public string Password { get; set; }
     }
 }

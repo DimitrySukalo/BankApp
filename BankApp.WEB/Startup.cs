@@ -46,6 +46,9 @@ namespace BankApp.WEB
             //Adding email service
             services.AddTransient<ISendEmailService, SendEmailService>();
 
+            //Adding home service
+            services.AddTransient<IHomeService, HomeService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
