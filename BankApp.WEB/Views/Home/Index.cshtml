@@ -50,7 +50,7 @@
                     else
                     {
                         <li class="sign-in">
-                            <a href="#">
+                            <a asp-action="Index" asp-controller="Profile">
                                 Profile
                             </a>
                         </li>
@@ -65,7 +65,14 @@
             <div class="header__content">
                 <h1 class="header__title">Your best choice</h1>
                 <div class="start__button">
-                    <a class="start" href="#">GO</a>
+                    @if (Model.User != null)
+                    {
+                        <a class="start" asp-action="Index" asp-controller="Profile">GO</a>
+                    }
+                    else 
+                    {
+                        <a class="start" asp-action="Index" asp-controller="Login">GO</a>
+                    }
                 </div>
             </div>
         </div>

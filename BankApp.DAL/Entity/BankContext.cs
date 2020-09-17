@@ -21,10 +21,21 @@ namespace BankApp.DAL.Entity
         public DbSet<UserMessage> Messages { get; set; }
 
         /// <summary>
+        /// Histories
+        /// </summary>
+        public DbSet<History> Histories { get; set; }
+
+        /// <summary>
+        /// Wallets
+        /// </summary>
+        public DbSet<Wallet> Wallets { get; set; }
+
+        /// <summary>
         /// Creating database
         /// </summary>
         public BankContext(DbContextOptions<BankContext> options) : base(options)
         {
+            Database.EnsureCreated();
         }
     }
 }

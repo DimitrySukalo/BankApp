@@ -1,5 +1,6 @@
 ﻿using BankApp.DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 
 namespace BankApp.DAL.Entities
 {
@@ -27,5 +28,10 @@ namespace BankApp.DAL.Entities
         /// User country
         /// </summary>
         public Country Country { get; set; }
+
+        /// <summary>
+        /// User wallets
+        /// </summary>
+        public virtual ICollection<Wallet> Wallets { get; set; }
     }
 }

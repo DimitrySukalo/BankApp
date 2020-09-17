@@ -23,6 +23,11 @@ namespace BankApp.DAL.Interfaces
         UserManager<User> UserManager { get; }
 
         /// <summary>
+        /// Wallet repository
+        /// </summary>
+        IWalletRepository WalletRepository { get; }
+
+        /// <summary>
         /// Save data async
         /// </summary>
         /// <returns></returns>

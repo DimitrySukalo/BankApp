@@ -1,1 +1,147 @@
-﻿
+﻿@model BankApp.PL.ViewModels.WalletViewModel
+
+@{
+    ViewData["Title"] = "Profile page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/profile.css">
+    <title>Bank App</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header__content">
+                <ul class="header__menu">
+                    <li class="logo__link">
+                        <a asp-action="Index" asp-controller="Home">Home</a>
+                    </li>
+                    <li class="profile__link">
+                        <a asp-action="Index" asp-controller="Profile">Profile</a>
+                    </li>
+                    <li class="logout__link">
+                        <a asp-action="Index" asp-controller="Login">Log out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </header>
+    <section class="action__section">
+        <div class="container">
+            <div class="action__content">
+                <div class="actions__wallet">
+                    <ul class="actions">
+                        <li class="wallet__action">
+                            <img class="wallet__icon" src="~/img/wallet.png" />
+                            <a asp-action="AddWallet" asp-controller="Wallet">Add wallet</a>
+                        </li>
+                        <li class="wallet__action">
+                            <img class="transfer__icon" src="~/img/transfer.png" />
+                            <a asp-action="MakeTransaction" asp-controller="Transaction">Transact</a>
+                        </li>
+                        <li class="wallet__action">
+                            <img class="deposit__icon" src="~/img/deposit.png" />
+                            <a asp-action="Deposit" asp-controller="Deposit">Make deposit</a>
+                        </li>
+                    </ul>
+                    <ul class="actions">
+                        <li class="wallet__action">
+                            <img class="wallet__icon" src="~/img/piggyBank.png" />
+                            <a asp-action="PiggyBank" asp-controller="Operation">Money box</a>
+                        </li>
+                        <li class="wallet__action">
+                            <img class="wallet__icon" src="~/img/history.png" />
+                            <a asp-action="ShowAllHistory" asp-controller="History">All operations</a>
+                        </li>
+                        <li class="wallet__action">
+                            <img class="wallet__icon" src="~/img/currency.png" />
+                            <a asp-action="GetExchangeRates" asp-controller="Rates">Currency rates</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="card__section">
+        <div class="container">
+            <div class="card__content">
+                <h1 class="card__title">Your cards</h1>
+                @if(Model.Wallets.Count() == 0)
+                {
+                    <p class="no-card__text">You don't have any cards</p>
+                }
+            <table class="table">
+                @foreach (var wallet in Model.Wallets)
+                {
+                    @if (wallet.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                    {
+                        <tr>
+                            <th>
+                                <div class="card__eur">
+                                    <p class="data">@wallet.Number</p>
+                                </div>
+                            </th>
+                            <th>
+                                <p>Money: @wallet.Money EUR</p>
+                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
+                            </th>
+                        </tr>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                    {
+                        <tr>
+                            <th>
+                                <div class="card__rub">
+                                    <p class="data">@wallet.Number</p>
+                                </div>
+                            </th>
+                            <th>
+                                <p>Money: @wallet.Money RUB</p>
+                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
+                            </th>
+                        </tr>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                    {
+                        <tr>
+                            <th>
+                                <div class="card__uan">
+                                    <p class="data">@wallet.Number</p>
+                                </div>
+                            </th>
+                            <th>
+                                <p>Money: @wallet.Money UAH</p>
+                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
+                            </th>
+                        </tr>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.USD)
+                    {
+                        <tr>
+                            <th>
+                                <div class="card__usd">
+                                    <p class="data">@wallet.Number</p>
+                                </div>
+                            </th>
+                            <th>
+                                <p>Money: @wallet.Money USD</p>
+                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
+                            </th>
+                        </tr>
+                    }
+                }
+            </table>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

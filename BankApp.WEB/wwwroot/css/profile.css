@@ -1,0 +1,115 @@
+﻿body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Khand', sans-serif;
+    color: #000000;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.container {
+    margin: 0 auto;
+    width: 1000px;
+}
+
+.header__menu {
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    font-size: 32px;
+}
+
+.actions__wallet {
+    display: flex;
+    justify-content: space-between;
+}
+
+.actions {
+    list-style: none;
+    margin-top: 20px;
+    text-align: left;
+    font-size: 18px;
+}
+
+.wallet__action img {
+    width: 40px;
+}
+
+.actions a {
+    color: #0060f8;
+}
+
+.card__title {
+    font-size: 32px;
+    text-align: center;
+    padding-top: 20px;
+}
+
+.no-card__text {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.table th {
+    padding-left: 100px;
+    padding-bottom: 50px;
+}
+
+.table a {
+    color: #0060f8;
+}
+
+.card__eur {
+    background: url(../img/eur_card.png);
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 460px;
+    padding: 0px;
+    position: relative;
+}
+
+.card__rub {
+    background: url(../img/rub_card.png);
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 460px;
+    padding: 0px;
+    position: relative;
+}
+
+.card__uan {
+    background: url(../img/uan_card.png);
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 460px;
+    padding: 0px;
+    position: relative;
+}
+
+.card__usd {
+    background: url(../img/usd_card.png);
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 460px;
+    padding: 0px;
+    position: relative;
+}
+
+.data {
+    position: absolute;
+    margin-top: 130px;
+    margin-left: 170px;
+    color: #fff;
+    font-size: 20px;
+}

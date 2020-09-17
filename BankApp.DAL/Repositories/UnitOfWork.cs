@@ -28,6 +28,11 @@ namespace BankApp.DAL.Repositories
         public BankContext Database { get; }
 
         /// <summary>
+        /// Wallet repository
+        /// </summary>
+        private WalletRepository walletRepository;
+
+        /// <summary>
         /// Initialization
         /// </summary>
         public UnitOfWork(UserManager<User> userManager, SignInManager<User> signInManager, BankContext context)
@@ -50,6 +55,22 @@ namespace BankApp.DAL.Repositories
             UserManager = userManager;
             SignInManager = signInManager;
             Database = context;
+        }
+
+        /// <summary>
+        /// Wallet repository
+        /// </summary>
+        public IWalletRepository WalletRepository
+        {
+            get
+            {
+                if(walletRepository == null)
+                {
+                    walletRepository = new WalletRepository(Database);
+                }
+
+                return walletRepository;
+            }
         }
 
         /// <summary>

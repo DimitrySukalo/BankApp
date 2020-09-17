@@ -49,6 +49,9 @@ namespace BankApp.WEB
             //Adding home service
             services.AddTransient<IHomeService, HomeService>();
 
+            //Adding wallet service
+            services.AddTransient<IWalletService, WalletService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
