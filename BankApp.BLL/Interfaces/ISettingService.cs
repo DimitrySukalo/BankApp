@@ -18,5 +18,10 @@ namespace BankApp.BLL.Interfaces
         /// Change country
         /// </summary>
         Task ChangeCountryAsync(CountryDTO countryDTO);
+
+        /// <summary>
+        /// Change number
+        /// </summary>
+        Task ChangeNumberAsync(ChangeNumberDTO changeNumberDTO);
     }
 }

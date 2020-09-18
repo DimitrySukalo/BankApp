@@ -37,7 +37,7 @@
                 <th>@Model.User.Email</th>
 
                 <th>
-                    <a asp-action="ChangeEmail" asp-controller="Profile">Change email</a>
+                    <a asp-action="ChangeEmail" asp-controller="ChangeEmail">Change email</a>
                 </th>
             </tr>
             <tr>
@@ -67,7 +67,7 @@
                 }
 
                 <th>
-                    <a asp-action="ChangePhoneNumber" asp-controller="Profile">Change</a>
+                    <a asp-action="ChangePhone" asp-controller="ChangePhone">Change</a>
                 </th>
             </tr>
             @foreach (var wallet in Model.Wallets)

@@ -1,0 +1,43 @@
+﻿@model BankApp.PL.ViewModels.ChangeDataViewModel
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Change number</title>
+    <style>
+        .body {
+            font-family: 'Khand', sans-serif;
+        }
+    </style>
+
+</head>
+<body>
+    <form method="post" asp-action="ChangePhone" asp-controller="ChangePhone">
+        <div class="container text-center">
+            <div asp-validation-summary="All" style="color: red; font-weight: 400;"></div>
+            <h3>Enter phone number</h3>
+            @if (string.IsNullOrWhiteSpace(Model.PhoneNumber))
+            {
+                <input class="form-control" type="text" asp-for="PhoneNumber"/>
+                <span asp-validation-for="PhoneNumber"></span>
+            }
+            else
+            {
+                <input class="form-control" type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
+                <span asp-validation-for="PhoneNumber"></span>
+            }
+
+            <div class="buttons" style="display: flex; margin-top: 30px;">
+                <a class="mr-3" asp-action="Index" asp-controller="Setting">Back</a>
+                <button class="btn btn-sm btn-primary" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

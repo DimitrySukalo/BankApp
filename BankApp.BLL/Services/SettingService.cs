@@ -42,6 +42,12 @@ namespace BankApp.BLL.Services
                 var user = await unitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == countryDTO.User.Id);
                 if(user != null)
                 {
+                    //Saving user country that to delete from the database
+                    var oldCountry = user.Country;
+
+                    //Removing country from the database
+                    await unitOfWork.CountryRepository.RemoveCountryAsync(oldCountry);
+
                     //Creating a country
                     var country = new Country()
                     {
@@ -54,6 +60,26 @@ namespace BankApp.BLL.Services
                     //Saving database
                     await unitOfWork.SaveAsync();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Change number method
+        /// </summary>
+        public async Task ChangeNumberAsync(ChangeNumberDTO changeNumberDTO)
+        {
+            //Getting user from the databse
+            var userDB = await unitOfWork.Database.Users.FirstOrDefaultAsync(u => u.Id == changeNumberDTO.User.Id);
+
+            if(changeNumberDTO != null && !string.IsNullOrWhiteSpace(changeNumberDTO.Number) && userDB != null)
+            {
+                //Result of setting phone number
+                var result = await unitOfWork.UserManager.SetPhoneNumberAsync(userDB, changeNumberDTO.Number);
+                if(result.Succeeded)
+                {
+                    //Saving database
+                    await unitOfWork.Database.SaveChangesAsync();
+                }    
             }
         }
     }

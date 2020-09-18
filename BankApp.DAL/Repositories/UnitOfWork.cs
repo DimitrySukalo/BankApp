@@ -33,6 +33,11 @@ namespace BankApp.DAL.Repositories
         private WalletRepository walletRepository;
 
         /// <summary>
+        /// Country repository
+        /// </summary>
+        private CountryRepository countryRepository;
+
+        /// <summary>
         /// Initialization
         /// </summary>
         public UnitOfWork(UserManager<User> userManager, SignInManager<User> signInManager, BankContext context)
@@ -70,6 +75,22 @@ namespace BankApp.DAL.Repositories
                 }
 
                 return walletRepository;
+            }
+        }
+
+        /// <summary>
+        /// Country repository
+        /// </summary>
+        public ICountryRepository CountryRepository
+        {
+            get
+            {
+                if(countryRepository == null)
+                {
+                    countryRepository = new CountryRepository(Database);
+                }
+
+                return countryRepository;
             }
         }
 

@@ -28,6 +28,11 @@ namespace BankApp.DAL.Interfaces
         IWalletRepository WalletRepository { get; }
 
         /// <summary>
+        /// Country repository
+        /// </summary>
+        ICountryRepository CountryRepository { get; }
+
+        /// <summary>
         /// Save data async
         /// </summary>
         /// <returns></returns>
