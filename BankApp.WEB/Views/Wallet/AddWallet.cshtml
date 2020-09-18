@@ -1,0 +1,67 @@
+﻿@model BankApp.PL.ViewModels.WalletViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Add wallet</title>
+</head>
+<body>
+    <form method="post" asp-action="AddWallet" asp-controller="Wallet">
+        <div class="container text-center" style="background: #fff; min-height: 100vh;">
+            <div asp-validation-summary="ModelOnly" style="color: red; font-weight: 400;"></div>
+            <div>
+                <span><b>Secure code</b></span>
+                <input class="form-control" type="text" asp-for="Code" style="margin-bottom: 20px;" />
+            </div>
+            <div>
+                <span><b>Currency</b></span>
+                <select class="custom-select" asp-for="Currency" style="margin-bottom: 20px;">
+                    @foreach (var item in Model.Currencies)
+                    {
+                        if (item == BankApp.DAL.Entities.Currencies.EUR)
+                        {
+                            <option value="@item">EUR</option>
+                        }
+                        else if (item == BankApp.DAL.Entities.Currencies.RUB)
+                        {
+                            <option value="@item">RUB</option>
+                        }
+                        else if (item == BankApp.DAL.Entities.Currencies.UAH)
+                        {
+                            <option value="@item">UAH</option>
+                        }
+                        else if (item == BankApp.DAL.Entities.Currencies.USD)
+                        {
+                            <option value="@item">USD</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <span><b>Phone number</b></span>
+                <input class="form-control" asp-for="User.PhoneNumber" value="@Model.User.PhoneNumber" type="text" disabled="disabled" />
+                <span asp-validation-for="User.PhoneNumber"></span>
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <span><b>Name</b></span>
+                <input class="form-control" asp-for="User.FirstName" value="@Model.User.FirstName" type="text" disabled="disabled" />
+                <span asp-validation-for="User.FirstName"></span>
+
+                <div style="margin-bottom: 20px;">
+                    <span><b>Lastname</b></span>
+                    <input class="form-control" asp-for="User.LastName" value="@Model.User.LastName" type="text" disabled="disabled" />
+                    <span asp-validation-for="User.LastName"></span>
+                </div>
+
+                <button class="btn btn-primary" type="submit" style="margin-bottom: 20px;">Create</button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

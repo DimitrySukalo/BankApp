@@ -52,6 +52,9 @@ namespace BankApp.WEB
             //Adding wallet service
             services.AddTransient<IWalletService, WalletService>();
 
+            //Adding setting service
+            services.AddTransient<ISettingService, SettingService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

@@ -1,0 +1,121 @@
+﻿@model BankApp.PL.ViewModels.ProfileViewModel
+
+@{
+    ViewBag.Title = "Профиль";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Profile setting</title>
+</head>
+<body>
+
+    <style>
+        .data__item {
+            display: flex;
+            text-align: left;
+        }
+    </style>
+
+    <div class="container text-center">
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>@Model.User.FirstName</th>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <th>@Model.User.LastName</th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th>@Model.User.Email</th>
+
+                <th>
+                    <a asp-action="ChangeEmail" asp-controller="Profile">Change email</a>
+                </th>
+            </tr>
+            <tr>
+                <th>Country</th>
+                @if (Model.User.Country == null)
+                {
+                    <th>Not filled</th>
+                }
+                else
+                {
+                    <th>@Model.User.Country.CountryName - @Model.User.Country.City</th>
+                }
+
+                <th>
+                    <a asp-action="ChangeCountry" asp-controller="ChangeCountry">Change</a>
+                </th>
+            </tr>
+            <tr>
+                <th>Phone number</th>
+                @if (Model.User.PhoneNumber == null)
+                {
+                    <th>Not filled</th>
+                }
+                else
+                {
+                    <th>@Model.User.PhoneNumber</th>
+                }
+
+                <th>
+                    <a asp-action="ChangePhoneNumber" asp-controller="Profile">Change</a>
+                </th>
+            </tr>
+            @foreach (var wallet in Model.Wallets)
+            {
+                <tr>
+                    @if (wallet.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                    {
+                        <th>Wallet number (EUR)</th>
+                        <th>@wallet.Number</th>
+                        <th>
+                            <form method="post" asp-action="DeleteWallet" asp-controller="Wallet" asp-route-id="@wallet.Id">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </th>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                    {
+                        <th>Wallet number (RUB)</th>
+                        <th>@wallet.Number</th>
+                        <th>
+                            <form method="post" asp-action="DeleteWallet" asp-controller="Wallet" asp-route-id="@wallet.Id">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </th>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                    {
+                        <th>Wallet number (UAH)</th>
+                        <th>@wallet.Number</th>
+                        <th>
+                            <form method="post" asp-action="DeleteWallet" asp-controller="Wallet" asp-route-id="@wallet.Id">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </th>
+                    }
+                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.USD)
+                    {
+                        <th>Wallet number (USD)</th>
+                        <th>@wallet.Number</th>
+                        <th>
+                            <form method="post" asp-action="DeleteWallet" asp-controller="Wallet" asp-route-id="@wallet.Id">
+                                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                            </form>
+                        </th>
+                    }
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

@@ -5,18 +5,18 @@ using System.Threading.Tasks;
 namespace BankApp.BLL.Interfaces
 {
     /// <summary>
-    /// Wallet service
+    /// Setting profile service
     /// </summary>
-    public interface IWalletService
+    public interface ISettingService
     {
         /// <summary>
         /// Unit of work
         /// </summary>
-        IUnitOfWork UnitOfWork { get; }
+        IUnitOfWork unitOfWork { get; }
 
         /// <summary>
-        /// Add wallet to the database
+        /// Change country
         /// </summary>
-        Task AddWalletAsync(WalletDTO walletDTO);
+        Task ChangeCountryAsync(CountryDTO countryDTO);
     }
 }

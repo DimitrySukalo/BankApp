@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace BankApp.WEB.Controllers
 {
     /// <summary>
-    /// Wallet controller
+    /// Profile setting controller
     /// </summary>
-    public class WalletController : Controller
+    public class SettingController : Controller
     {
         /// <summary>
         /// Wallet service
@@ -20,7 +20,7 @@ namespace BankApp.WEB.Controllers
         /// <summary>
         /// Initialization
         /// </summary>
-        public WalletController(IWalletService walletService)
+        public SettingController(IWalletService walletService)
         {
             if (walletService == null)
             {
@@ -31,11 +31,11 @@ namespace BankApp.WEB.Controllers
         }
 
         /// <summary>
-        /// Add wallet controller
+        /// Setting profile page
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> AddWallet()
+        public async Task<IActionResult> Index()
         {
             //Getting current user from the session
             var user = await walletService.UnitOfWork.UserManager.GetUserAsync(User);
@@ -43,13 +43,16 @@ namespace BankApp.WEB.Controllers
             //Getting user from the database
             var userDB = await walletService.UnitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
 
-            //Making wallet view model
-            var walletViewModel = new WalletViewModel()
+            var wallets = await walletService.UnitOfWork.WalletRepository.GetAllUserWalletsAync(userDB);
+
+            var profileModel = new ProfileViewModel()
             {
-                User = userDB
+                User = userDB,
+                Wallets = wallets
             };
 
-            return View(walletViewModel);
+            return View(profileModel);
         }
+
     }
 }
