@@ -4,6 +4,7 @@ using BankApp.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BankApp.WEB.Controllers
@@ -58,9 +59,12 @@ namespace BankApp.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangeCountry(ChangeDataViewModel changeDataViewModel)
         {
-            if(changeDataViewModel.Country == null || 
-                string.IsNullOrWhiteSpace(changeDataViewModel.Country.CountryName) || 
-                string.IsNullOrWhiteSpace(changeDataViewModel.Country.City))
+            //Checking if data is correct
+            if (changeDataViewModel.Country == null ||
+                string.IsNullOrWhiteSpace(changeDataViewModel.Country.CountryName) ||
+                string.IsNullOrWhiteSpace(changeDataViewModel.Country.City) ||
+                !Regex.IsMatch(changeDataViewModel.Country.CountryName, @"^[A-z]") ||
+                !Regex.IsMatch(changeDataViewModel.Country.City, @"^[A-z]"))
             {
                 ModelState.AddModelError(string.Empty, "Data is not correct");
                 return View(changeDataViewModel);

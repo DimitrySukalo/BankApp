@@ -4,6 +4,7 @@ using BankApp.PL.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BankApp.WEB.Controllers
@@ -57,9 +58,10 @@ namespace BankApp.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ChangePhone(ChangeDataViewModel changeDataViewModel)
         {
-            if(string.IsNullOrWhiteSpace(changeDataViewModel.PhoneNumber) || changeDataViewModel == null)
+            if(string.IsNullOrWhiteSpace(changeDataViewModel.PhoneNumber) || changeDataViewModel == null ||
+                !Regex.IsMatch(changeDataViewModel.PhoneNumber, @"380[0-9]{9}"))
             {
-                ModelState.AddModelError(string.Empty, "Data is not correct");
+                ModelState.AddModelError(string.Empty, "Data is not correct. Template of the phone number: 380XXXXXXXXX");
                 return View(changeDataViewModel);
             }
             else
