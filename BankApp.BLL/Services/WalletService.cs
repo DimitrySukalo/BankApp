@@ -3,6 +3,7 @@ using BankApp.BLL.DTO;
 using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
 using BankApp.DAL.Interfaces;
+using BankApp.DAL.Models;
 using System;
 using System.Threading.Tasks;
 
@@ -31,7 +32,7 @@ namespace BankApp.BLL.Services
         /// <summary>
         /// Add wallet to the database
         /// </summary>
-        public async Task AddWalletAsync(WalletDTO walletDTO)
+        public async Task<OperationSuccessed> AddWalletAsync(WalletDTO walletDTO)
         {
             if(walletDTO != null)
             {
@@ -49,6 +50,12 @@ namespace BankApp.BLL.Services
 
                 //Saving the database
                 await UnitOfWork.SaveAsync();
+
+                return new OperationSuccessed("Wallet is added", true);
+            }
+            else
+            {
+                return new OperationSuccessed("Wallet is not added", false);
             }
         }
     }

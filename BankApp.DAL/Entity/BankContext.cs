@@ -13,7 +13,7 @@ namespace BankApp.DAL.Entity
         /// <summary>
         /// Users countries
         /// </summary>
-        public DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
 
         /// <summary>
         /// User messages
@@ -29,6 +29,10 @@ namespace BankApp.DAL.Entity
         /// Wallets
         /// </summary>
         public DbSet<Wallet> Wallets { get; set; }
+
+        public BankContext()
+        {
+        }
 
         /// <summary>
         /// Creating database

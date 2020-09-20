@@ -1,5 +1,7 @@
 ﻿using BankApp.BLL.Interfaces;
+using BankApp.DAL.Entities;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,15 +20,26 @@ namespace BankApp.WEB.Controllers
         private readonly IWalletService walletService;
 
         /// <summary>
+        /// User manager
+        /// </summary>
+        private readonly UserManager<User> userManager;
+
+        /// <summary>
         /// Initialization
         /// </summary>
-        public WalletController(IWalletService walletService)
+        public WalletController(IWalletService walletService, UserManager<User> userManager)
         {
             if (walletService == null)
             {
                 throw new ArgumentNullException(nameof(walletService), " was null.");
             }
 
+            if(userManager == null)
+            {
+                throw new ArgumentNullException(nameof(userManager), " was null.");
+            }
+
+            this.userManager = userManager;
             this.walletService = walletService;
         }
 
@@ -38,18 +51,15 @@ namespace BankApp.WEB.Controllers
         public async Task<IActionResult> AddWallet()
         {
             //Getting current user from the session
-            var user = await walletService.UnitOfWork.UserManager.GetUserAsync(User);
-
-            //Getting user from the database
-            var userDB = await walletService.UnitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
+            var user = await userManager.GetUserAsync(User);
 
             //Making wallet view model
             var walletViewModel = new WalletViewModel()
             {
-                User = userDB
+                User = user
             };
 
-            return View(walletViewModel);
+            return View("AddWallet", walletViewModel);
         }
     }
 }

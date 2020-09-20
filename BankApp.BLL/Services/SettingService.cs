@@ -34,7 +34,7 @@ namespace BankApp.BLL.Services
         /// <summary>
         /// Setting service
         /// </summary>
-        public async Task ChangeCountryAsync(CountryDTO countryDTO)
+        public async Task<OperationSuccessed> ChangeCountryAsync(CountryDTO countryDTO)
         {
             if(countryDTO != null)
             {
@@ -59,14 +59,24 @@ namespace BankApp.BLL.Services
 
                     //Saving database
                     await unitOfWork.SaveAsync();
+
+                    return new OperationSuccessed("Data changed", true);
                 }
+                else
+                {
+                    return new OperationSuccessed("Data is not correct", false);
+                }
+            }
+            else
+            {
+                return new OperationSuccessed("Data is not correct", false);
             }
         }
 
         /// <summary>
         /// Change number method
         /// </summary>
-        public async Task ChangeNumberAsync(ChangeNumberDTO changeNumberDTO)
+        public async Task<OperationSuccessed> ChangeNumberAsync(ChangeNumberDTO changeNumberDTO)
         {
             //Getting user from the databse
             var userDB = await unitOfWork.Database.Users.FirstOrDefaultAsync(u => u.Id == changeNumberDTO.User.Id);
@@ -79,7 +89,17 @@ namespace BankApp.BLL.Services
                 {
                     //Saving database
                     await unitOfWork.Database.SaveChangesAsync();
-                }    
+
+                    return new OperationSuccessed("Data is changed", true);
+                }
+                else
+                {
+                    return new OperationSuccessed("Data is not correct.Template of the phone number: 380XXXXXXXXX", false);
+                }
+            }
+            else
+            {
+                return new OperationSuccessed("Data is not correct.Template of the phone number: 380XXXXXXXXX", false);
             }
         }
     }

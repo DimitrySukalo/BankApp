@@ -20,7 +20,7 @@ namespace BankApp.DAL.Repositories
         /// <summary>
         /// User manager
         /// </summary>
-        public UserManager<User> UserManager { get; }
+        public UserManager<User> UserManager { get; set; }
 
         /// <summary>
         /// Database

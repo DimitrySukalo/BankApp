@@ -1,5 +1,6 @@
 ﻿using BankApp.BLL.DTO;
 using BankApp.DAL.Interfaces;
+using BankApp.DAL.Models;
 using System.Threading.Tasks;
 
 namespace BankApp.BLL.Interfaces
@@ -17,6 +18,6 @@ namespace BankApp.BLL.Interfaces
         /// <summary>
         /// Add wallet to the database
         /// </summary>
-        Task AddWalletAsync(WalletDTO walletDTO);
+        Task<OperationSuccessed> AddWalletAsync(WalletDTO walletDTO);
     }
 }

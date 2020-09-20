@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using BankApp.BLL.DTO;
 using BankApp.BLL.Interfaces;
+using BankApp.DAL.Entities;
 using BankApp.DAL.Interfaces;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
@@ -12,24 +14,24 @@ namespace BankApp.WEB.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// Unit of work
-        /// </summary>
-        private readonly IUnitOfWork unitOfWork;
-
-        /// <summary>
         /// Home service
         /// </summary>
         private readonly IHomeService homeService;
 
         /// <summary>
+        /// User manager
+        /// </summary>
+        private readonly UserManager<User> userManager;
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="manager">IUserService</param>
-        public HomeController(IUnitOfWork unitOfWork, IHomeService homeService)
+        public HomeController(IHomeService homeService, UserManager<User> userManager)
         {
-            if (unitOfWork == null)
+            if (userManager == null)
             {
-                throw new ArgumentNullException(nameof(unitOfWork), " was null.");
+                throw new ArgumentNullException(nameof(userManager), " was null.");
             }
 
             if(homeService == null)
@@ -38,7 +40,7 @@ namespace BankApp.WEB.Controllers
             }
 
             this.homeService = homeService;
-            this.unitOfWork = unitOfWork;
+            this.userManager = userManager;
         }
 
         /// <summary>
@@ -46,9 +48,9 @@ namespace BankApp.WEB.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var user = unitOfWork.UserManager.GetUserAsync(User).Result;
+            var user = await userManager.GetUserAsync(User);
 
             var models = new MultiplyHomeModels()
             {
@@ -66,22 +68,22 @@ namespace BankApp.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage(MultiplyHomeModels multiplyHomeModels)
         {
-            if(ModelState.IsValid)
+            if(ModelState.IsValid && multiplyHomeModels.MessageViewModel != null)
             {
                 var userMessageViewModel = multiplyHomeModels.MessageViewModel;
-                if(userMessageViewModel != null)
+                //Mapper configuration
+                var configuration = new MapperConfiguration(conf => conf.CreateMap<UserMessageViewModel, UserMessageDTO>());
+
+                //Mapper
+                var mapper = new Mapper(configuration);
+
+                //Creating user message
+                var userMessageDTO = mapper.Map<UserMessageViewModel, UserMessageDTO>(userMessageViewModel);
+
+                var result = await homeService.SaveUserMessageInDbAsync(userMessageDTO);
+                if(result != null)
                 {
-                    //Mapper configuration
-                    var configuration = new MapperConfiguration(conf => conf.CreateMap<UserMessageViewModel, UserMessageDTO>());
-
-                    //Mapper
-                    var mapper = new Mapper(configuration);
-
-                    //Creating user message
-                    var userMessageDTO = mapper.Map<UserMessageViewModel, UserMessageDTO>(userMessageViewModel);
-
-                    var result = await homeService.SaveUserMessageInDbAsync(userMessageDTO);
-                    if(result.Successed)
+                    if (result.Successed)
                     {
                         return RedirectToAction("Index");
                     }
@@ -98,11 +100,11 @@ namespace BankApp.WEB.Controllers
             else
             {
                 //Finding user that to detect form of the home page
-                var user = await unitOfWork.UserManager.GetUserAsync(User);
+                var user = await userManager.GetUserAsync(User);
                 multiplyHomeModels.User = user;
 
                 //Error view model
-                return View("Index", multiplyHomeModels); //Не показывает ошибки при вводе неправильной информации
+                return View("Index", multiplyHomeModels);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using BankApp.BLL.DTO;
 using BankApp.DAL.Interfaces;
+using BankApp.DAL.Models;
 using System.Threading.Tasks;
 
 namespace BankApp.BLL.Interfaces
@@ -17,11 +18,11 @@ namespace BankApp.BLL.Interfaces
         /// <summary>
         /// Change country
         /// </summary>
-        Task ChangeCountryAsync(CountryDTO countryDTO);
+        Task<OperationSuccessed> ChangeCountryAsync(CountryDTO countryDTO);
 
         /// <summary>
         /// Change number
         /// </summary>
-        Task ChangeNumberAsync(ChangeNumberDTO changeNumberDTO);
+        Task<OperationSuccessed> ChangeNumberAsync(ChangeNumberDTO changeNumberDTO);
     }
 }

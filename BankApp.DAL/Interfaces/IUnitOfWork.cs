@@ -20,7 +20,7 @@ namespace BankApp.DAL.Interfaces
         /// <summary>
         /// User manager
         /// </summary>
-        UserManager<User> UserManager { get; }
+        UserManager<User> UserManager { get; set; }
 
         /// <summary>
         /// Wallet repository

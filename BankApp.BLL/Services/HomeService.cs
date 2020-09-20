@@ -15,10 +15,6 @@ namespace BankApp.BLL.Services
     /// </summary>
     public class HomeService : IHomeService
     {
-        /// <summary>
-        /// Logger
-        /// </summary>
-        private readonly ILogger<HomeService> logger;
 
         /// <summary>
         /// Unit of work
@@ -28,19 +24,14 @@ namespace BankApp.BLL.Services
         /// <summary>
         /// Initialization
         /// </summary>
-        public HomeService(ILogger<HomeService> logger, IUnitOfWork unitOfWork)
+        public HomeService(IUnitOfWork unitOfWork)
         {
-            if(logger == null)
-            {
-                throw new ArgumentNullException(nameof(logger), " was null.");
-            }
 
             if(unitOfWork == null)
             {
                 throw new ArgumentNullException(nameof(unitOfWork), " was null.");
             }
 
-            this.logger = logger;
             this.unitOfWork = unitOfWork;
         }
 
@@ -49,7 +40,10 @@ namespace BankApp.BLL.Services
         /// </summary>
         public async Task<OperationSuccessed> SaveUserMessageInDbAsync(UserMessageDTO messageDTO)
         {
-            if(messageDTO != null)
+            if(messageDTO != null && !string.IsNullOrWhiteSpace(messageDTO.Email) ||
+                string.IsNullOrWhiteSpace(messageDTO.FirstName) ||
+                string.IsNullOrWhiteSpace(messageDTO.LastName) ||
+                string.IsNullOrWhiteSpace(messageDTO.Message))
             {
                 //Mapper configuration
                 var configuration = new MapperConfiguration(conf => conf.CreateMap<UserMessageDTO, UserMessage>());
@@ -70,8 +64,6 @@ namespace BankApp.BLL.Services
             }
             else
             {
-                //Displaying information in the console
-                logger.LogInformation("Message dto is NULL");
                 return new OperationSuccessed("Message dto is NULL", false);
             }
         }

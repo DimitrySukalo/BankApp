@@ -1,6 +1,9 @@
 ﻿using BankApp.BLL.DTO;
 using BankApp.BLL.Interfaces;
+using BankApp.DAL.Entities;
+using BankApp.DAL.Entity;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,16 +21,38 @@ namespace BankApp.WEB.Controllers
         private readonly ISettingService settingService;
 
         /// <summary>
+        /// User manager
+        /// </summary>
+        private readonly UserManager<User> userManager;
+
+        /// <summary>
+        /// Database
+        /// </summary>
+        private readonly BankContext db;
+
+        /// <summary>
         /// Initialization
         /// </summary>
-        public ChangeCountryController(ISettingService settingService)
+        public ChangeCountryController(ISettingService settingService, UserManager<User> userManager, BankContext context)
         {
             if(settingService == null)
             {
                 throw new ArgumentNullException(nameof(settingService), " was null.");
             }
+            
+            if(userManager == null)
+            {
+                throw new ArgumentNullException(nameof(userManager), " was null.");
+            }
+
+            if(context == null)
+            {
+                throw new ArgumentNullException(nameof(context), " was null.");
+            }
 
             this.settingService = settingService;
+            this.userManager = userManager;
+            db = context;
         }
 
         /// <summary>
@@ -38,17 +63,17 @@ namespace BankApp.WEB.Controllers
         public async Task<IActionResult> ChangeCountry()
         {
             //Getting current user in the session
-            var user = await settingService.unitOfWork.UserManager.GetUserAsync(User);
+            var user = await userManager.GetUserAsync(User);
 
             //Getting user from the database with the country
-            var userDB = await settingService.unitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
+            var userDB = await db.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
 
             var changeDataViewModel = new ChangeDataViewModel()
             {
                 Country = userDB.Country
             };
 
-            return View(changeDataViewModel);
+            return View("ChangeCountry", changeDataViewModel);
         }
 
         /// <summary>
@@ -67,15 +92,15 @@ namespace BankApp.WEB.Controllers
                 !Regex.IsMatch(changeDataViewModel.Country.City, @"^[A-z]"))
             {
                 ModelState.AddModelError(string.Empty, "Data is not correct");
-                return View(changeDataViewModel);
+                return View("ChangeCountry", changeDataViewModel);
             }
             else
             {
                 //Getting current user in the session
-                var user = await settingService.unitOfWork.UserManager.GetUserAsync(User);
+                var user = await userManager.GetUserAsync(User);
 
                 //Getting user from the database with the country
-                var userDB = await settingService.unitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
+                var userDB = await db.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
 
                 var countryDTO = new CountryDTO()
                 {
@@ -84,9 +109,16 @@ namespace BankApp.WEB.Controllers
                     User = userDB
                 };
 
-                await settingService.ChangeCountryAsync(countryDTO);
-
-                return RedirectToAction("Index", "Setting");
+                var result = await settingService.ChangeCountryAsync(countryDTO);
+                if(result.Successed)
+                {
+                    return RedirectToAction("Index", "Setting");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    return View("ChangeCountry", changeDataViewModel);
+                }
             }
         }
     }

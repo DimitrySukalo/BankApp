@@ -1,8 +1,9 @@
 ﻿using BankApp.BLL.DTO;
 using BankApp.BLL.Interfaces;
+using BankApp.DAL.Entities;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -14,19 +15,32 @@ namespace BankApp.WEB.Controllers
     /// </summary>
     public class ChangePhoneController : Controller
     {
-        //Setting service
+        /// <summary>
+        /// Setting service
+        /// </summary>
         private readonly ISettingService settingService;
+
+        /// <summary>
+        /// User Manager
+        /// </summary>
+        private readonly UserManager<User> userManager;
 
         /// <summary>
         /// Initialization
         /// </summary>
-        public ChangePhoneController(ISettingService settingService)
+        public ChangePhoneController(ISettingService settingService, UserManager<User> userManager)
         {
             if (settingService == null)
             {
                 throw new ArgumentNullException(nameof(settingService), " was null.");
             }
 
+            if(userManager == null)
+            {
+                throw new ArgumentNullException(nameof(userManager), " was null.");
+            }
+
+            this.userManager = userManager;
             this.settingService = settingService;
         }
 
@@ -38,17 +52,14 @@ namespace BankApp.WEB.Controllers
         public async Task<IActionResult> ChangePhone()
         {
             //Getting current user in the session
-            var user = await settingService.unitOfWork.UserManager.GetUserAsync(User);
-
-            //Getting user from the database with the country
-            var userDB = await settingService.unitOfWork.Database.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
+            var user = await userManager.GetUserAsync(User);
 
             var changeDataViewModel = new ChangeDataViewModel()
             {
                 PhoneNumber = user.PhoneNumber
             };
 
-            return View(changeDataViewModel);
+            return View("ChangePhone", changeDataViewModel);
         }
 
         /// <summary>
@@ -62,7 +73,7 @@ namespace BankApp.WEB.Controllers
                 !Regex.IsMatch(changeDataViewModel.PhoneNumber, @"380[0-9]{9}"))
             {
                 ModelState.AddModelError(string.Empty, "Data is not correct. Template of the phone number: 380XXXXXXXXX");
-                return View(changeDataViewModel);
+                return View("ChangePhone", changeDataViewModel);
             }
             else
             {
@@ -73,8 +84,16 @@ namespace BankApp.WEB.Controllers
                 };
 
                 //Changing user phine number
-                await settingService.ChangeNumberAsync(changeNumberDTO);
-                return RedirectToAction("Index", "Setting");
+                var result = await settingService.ChangeNumberAsync(changeNumberDTO);
+                if(result.Successed)
+                {
+                    return RedirectToAction("Index", "Setting");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    return View("ChangePhone", changeNumberDTO);
+                }
             }
         }
     }
