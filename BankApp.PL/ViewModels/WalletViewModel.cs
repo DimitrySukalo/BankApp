@@ -1,5 +1,6 @@
 ﻿using BankApp.DAL.Entities;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace BankApp.PL.ViewModels
 {
@@ -16,6 +17,7 @@ namespace BankApp.PL.ViewModels
         /// <summary>
         /// Code
         /// </summary>
+        [Required(ErrorMessage = "Code is not filled")]
         public string Code { get; set; }
 
         /// <summary>
@@ -32,6 +34,7 @@ namespace BankApp.PL.ViewModels
         /// <summary>
         /// Currency
         /// </summary>
+        [Required(ErrorMessage = "Currency is not selected")]
         public Currencies Currency { get; set; }
 
         /// <summary>

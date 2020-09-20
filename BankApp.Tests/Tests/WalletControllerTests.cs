@@ -1,5 +1,6 @@
 ﻿using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
+using BankApp.DAL.Entity;
 using BankApp.WEB.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -29,7 +30,8 @@ namespace BankApp.Tests.Tests
 
             mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
             var serviceMock = new Mock<IWalletService>();
-            var walletController = new WalletController(serviceMock.Object, mockUserManager.Object)
+            var dbMock = new Mock<BankContext>();
+            var walletController = new WalletController(serviceMock.Object, mockUserManager.Object, dbMock.Object)
             {
                 ControllerContext = new ControllerContext()
                 {

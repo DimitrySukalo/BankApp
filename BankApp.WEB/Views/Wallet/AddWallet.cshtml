@@ -12,7 +12,7 @@
 <body>
     <form method="post" asp-action="AddWallet" asp-controller="Wallet">
         <div class="container text-center" style="background: #fff; min-height: 100vh;">
-            <div asp-validation-summary="ModelOnly" style="color: red; font-weight: 400;"></div>
+            <div asp-validation-summary="All" style="color: red; font-weight: 400;"></div>
             <div>
                 <span><b>Secure code</b></span>
                 <input class="form-control" type="text" asp-for="Code" style="margin-bottom: 20px;" />
@@ -59,7 +59,8 @@
                     <span asp-validation-for="User.LastName"></span>
                 </div>
 
-                <button class="btn btn-primary" type="submit" style="margin-bottom: 20px;">Create</button>
+                <a class="btn btn-sm btn-primary" asp-action="Index" asp-controller="Profile">Back</a>
+                <button class="btn btn-sm btn-primary" type="submit">Create</button>
             </div>
         </div>
     </form>

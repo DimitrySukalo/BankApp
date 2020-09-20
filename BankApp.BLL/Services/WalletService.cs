@@ -5,6 +5,7 @@ using BankApp.DAL.Entities;
 using BankApp.DAL.Interfaces;
 using BankApp.DAL.Models;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BankApp.BLL.Services
@@ -44,6 +45,15 @@ namespace BankApp.BLL.Services
 
                 //Creating user message
                 var wallet = mapper.Map<WalletDTO, Wallet>(walletDTO);
+                var rnd = new Random();
+
+                var strNumber1 = rnd.Next(1000,9999).ToString();
+                var strNumber2 = rnd.Next(1000, 9999).ToString();
+                var strNumber3 = rnd.Next(1000, 9999).ToString();
+                var strNumber4 = rnd.Next(1000, 9999).ToString();
+
+                var walletNumber = strNumber1 + strNumber2 + strNumber3 + strNumber4;
+                wallet.Number = walletNumber;
 
                 //Adding wallet to the database
                 await UnitOfWork.WalletRepository.AddWalletAsync(wallet);
