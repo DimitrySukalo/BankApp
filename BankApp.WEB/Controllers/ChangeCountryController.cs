@@ -3,6 +3,7 @@ using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
 using BankApp.DAL.Entity;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace BankApp.WEB.Controllers
     /// <summary>
     /// Change country controller
     /// </summary>
+    [Authorize]
     public class ChangeCountryController : Controller
     {
         //Setting service

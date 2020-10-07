@@ -4,8 +4,8 @@ using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
 using BankApp.DAL.Interfaces;
 using BankApp.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BankApp.BLL.Services
@@ -45,14 +45,8 @@ namespace BankApp.BLL.Services
 
                 //Creating user message
                 var wallet = mapper.Map<WalletDTO, Wallet>(walletDTO);
-                var rnd = new Random();
+                string walletNumber = await GetWalletNumber();
 
-                var strNumber1 = rnd.Next(1000,9999).ToString();
-                var strNumber2 = rnd.Next(1000, 9999).ToString();
-                var strNumber3 = rnd.Next(1000, 9999).ToString();
-                var strNumber4 = rnd.Next(1000, 9999).ToString();
-
-                var walletNumber = strNumber1 + strNumber2 + strNumber3 + strNumber4;
                 wallet.Number = walletNumber;
 
                 //Adding wallet to the database
@@ -67,6 +61,48 @@ namespace BankApp.BLL.Services
             {
                 return new OperationSuccessed("Wallet is not added", false);
             }
+        }
+
+        private async Task<string> GetWalletNumber()
+        {
+            var rnd = new Random();
+
+            var strNumber1 = rnd.Next(1000, 9999).ToString();
+            var strNumber2 = rnd.Next(1000, 9999).ToString();
+            var strNumber3 = rnd.Next(1000, 9999).ToString();
+            var strNumber4 = rnd.Next(1000, 9999).ToString();
+
+            var walletNumber = strNumber1 + strNumber2 + strNumber3 + strNumber4;
+            var allDbWallets = await UnitOfWork.Database.Wallets.ToListAsync();
+
+            foreach(var wallet in allDbWallets)
+            {
+                if(wallet.Number == walletNumber)
+                {
+                    await GetWalletNumber();
+                }
+            }
+
+            return walletNumber;
+        }
+
+        /// <summary>
+        /// Removing wallet from the database
+        /// </summary>
+        public async Task<OperationSuccessed> DeleteWalletByIdAsync(int id)
+        {
+            var wallet = await UnitOfWork.WalletRepository.GetWalletByIdAsync(id);
+            if(wallet != null)
+            {
+                var user = wallet.User;
+                var userInDb = await UnitOfWork.Database.Users.Include(u => u.PiggyBank).FirstOrDefaultAsync(u => u.Id == user.Id);
+                if(userInDb != null)
+                {
+                    userInDb.PiggyBank.Money = wallet.Money;
+                }
+            }
+            await UnitOfWork.WalletRepository.RemoveWalletByIdAsync(id);
+            return new OperationSuccessed("Wallet is removed", true);
         }
     }
 }

@@ -2,6 +2,7 @@
 using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace BankApp.WEB.Controllers
     /// <summary>
     /// Change phone controller
     /// </summary>
+    [Authorize]
     public class ChangePhoneController : Controller
     {
         /// <summary>

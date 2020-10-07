@@ -38,6 +38,11 @@ namespace BankApp.DAL.Repositories
         private CountryRepository countryRepository;
 
         /// <summary>
+        /// Piggy bank repository
+        /// </summary>
+        private PiggyBankRepository piggyBankRepository;
+
+        /// <summary>
         /// Initialization
         /// </summary>
         public UnitOfWork(UserManager<User> userManager, SignInManager<User> signInManager, BankContext context)
@@ -91,6 +96,22 @@ namespace BankApp.DAL.Repositories
                 }
 
                 return countryRepository;
+            }
+        }
+
+        /// <summary>
+        /// Piggy bank repository
+        /// </summary>
+        public IPiggyBankRepository PiggyBankRepository
+        {
+            get
+            {
+                if(piggyBankRepository == null)
+                {
+                    piggyBankRepository = new PiggyBankRepository(Database);
+                }
+
+                return piggyBankRepository;
             }
         }
 

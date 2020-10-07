@@ -30,6 +30,11 @@ namespace BankApp.DAL.Entity
         /// </summary>
         public DbSet<Wallet> Wallets { get; set; }
 
+        /// <summary>
+        /// Piggy banks
+        /// </summary>
+        public DbSet<PiggyBank> PiggyBanks { get; set; }
+
         public BankContext()
         {
         }
@@ -39,7 +44,6 @@ namespace BankApp.DAL.Entity
         /// </summary>
         public BankContext(DbContextOptions<BankContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
     }
 }

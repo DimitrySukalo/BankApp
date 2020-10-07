@@ -19,5 +19,10 @@ namespace BankApp.BLL.Interfaces
         /// Add wallet to the database
         /// </summary>
         Task<OperationSuccessed> AddWalletAsync(WalletDTO walletDTO);
+
+        /// <summary>
+        /// Delete wallet
+        /// </summary
+        Task<OperationSuccessed> DeleteWalletByIdAsync(int id);
     }
 }

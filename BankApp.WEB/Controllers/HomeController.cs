@@ -2,7 +2,6 @@
 using BankApp.BLL.DTO;
 using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
-using BankApp.DAL.Interfaces;
 using BankApp.PL.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

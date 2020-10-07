@@ -1,6 +1,7 @@
 ﻿using BankApp.DAL.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankApp.DAL.Entities
 {
@@ -33,5 +34,10 @@ namespace BankApp.DAL.Entities
         /// User wallets
         /// </summary>
         public virtual ICollection<Wallet> Wallets { get; set; }
+
+        /// <summary>
+        /// Piggy bank
+        /// </summary>
+        public PiggyBank PiggyBank { get; set; }
     }
 }

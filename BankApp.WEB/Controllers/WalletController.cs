@@ -4,6 +4,7 @@ using BankApp.BLL.Interfaces;
 using BankApp.DAL.Entities;
 using BankApp.DAL.Entity;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ namespace BankApp.WEB.Controllers
     /// <summary>
     /// Wallet controller
     /// </summary>
+    [Authorize]
     public class WalletController : Controller
     {
         /// <summary>
@@ -88,7 +90,7 @@ namespace BankApp.WEB.Controllers
                 var user = await userManager.GetUserAsync(User);
 
                 //Getting user from the database
-                var userDB = await db.Users.Include(u => u.Country).FirstOrDefaultAsync(u => u.Id == user.Id);
+                var userDB = await db.Users.Include(u => u.Country).Include(u => u.Wallets).FirstOrDefaultAsync(u => u.Id == user.Id);
 
                 if (user.Country == null || string.IsNullOrWhiteSpace(user.Country.City) || string.IsNullOrWhiteSpace(user.Country.CountryName)
                     || string.IsNullOrWhiteSpace(user.PhoneNumber))
@@ -99,6 +101,16 @@ namespace BankApp.WEB.Controllers
                 }
                 else
                 {
+                    foreach(var wallet in userDB.Wallets)
+                    {
+                        if(wallet.Currency == walletViewModel.Currency)
+                        {
+                            walletViewModel.User = user;
+                            ModelState.AddModelError(string.Empty, "This type of wallet already exist");
+                            return View("AddWallet", walletViewModel);
+                        }
+                    }
+
                     walletViewModel.User = user;
 
                     //Mapper configuration
@@ -130,6 +142,33 @@ namespace BankApp.WEB.Controllers
                 walletViewModel.User = user;
 
                 return View("AddWallet", walletViewModel);
+            }
+        }
+
+        /// <summary>
+        /// Delete wallet
+        /// </summary>
+        [HttpPost]
+        public async Task<IActionResult> DeleteWallet(int id)
+        {
+            var wallet = await db.Wallets.FirstOrDefaultAsync(w => w.Id == id);
+            if(wallet != null)
+            {
+                var result = await walletService.DeleteWalletByIdAsync(id);
+                if(result.Successed)
+                {
+                    return RedirectToAction("Index", "Setting");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, result.Message);
+                    return View("Index", "Setting");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Wallet doesn't exist");
+                return View("Index", "Setting");
             }
         }
     }

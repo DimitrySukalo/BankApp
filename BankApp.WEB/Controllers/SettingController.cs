@@ -1,5 +1,6 @@
 ﻿using BankApp.BLL.Interfaces;
 using BankApp.PL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +11,7 @@ namespace BankApp.WEB.Controllers
     /// <summary>
     /// Profile setting controller
     /// </summary>
+    [Authorize]
     public class SettingController : Controller
     {
         /// <summary>

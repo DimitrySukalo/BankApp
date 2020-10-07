@@ -33,6 +33,11 @@ namespace BankApp.DAL.Interfaces
         ICountryRepository CountryRepository { get; }
 
         /// <summary>
+        /// Piggy bank repository
+        /// </summary>
+        IPiggyBankRepository PiggyBankRepository { get; }
+
+        /// <summary>
         /// Save data async
         /// </summary>
         /// <returns></returns>

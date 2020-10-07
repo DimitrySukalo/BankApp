@@ -84,7 +84,7 @@ namespace BankApp.DAL.Repositories
         public async Task<Wallet> GetWalletByIdAsync(int id)
         {
             //Wallet in the database with the same id
-            var wallet = await db.Wallets.FirstOrDefaultAsync(w => w.Id == id);
+            var wallet = await db.Wallets.Include(w => w.User).FirstOrDefaultAsync(w => w.Id == id);
             return wallet;
         }
 

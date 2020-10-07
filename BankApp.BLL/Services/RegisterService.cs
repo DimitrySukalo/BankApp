@@ -48,7 +48,13 @@ namespace BankApp.BLL.Services
                 var user = mapper.Map<UserRegisterDTO, User>(userDTO);
 
                 if(user != null)
-                {
+                { 
+                    user.PiggyBank = new PiggyBank()
+                    {
+                        User = user,
+                        Money = 0.0m
+                    };
+
                     //Result of user registration
                     var result = UnitOfWork.UserManager.CreateAsync(user, user.Password).Result;
 
