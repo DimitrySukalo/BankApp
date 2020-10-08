@@ -36,14 +36,9 @@ namespace BankApp.WEB.Controllers
         private readonly BankContext db;
 
         /// <summary>
-        /// Unit of work
-        /// </summary>
-        private readonly IUnitOfWork unitOfWork;
-
-        /// <summary>
         /// Initialization
         /// </summary>
-        public PiggyBankController(UserManager<User> userManager, BankContext context, IPiggyBankService piggyBankService, IUnitOfWork unitOfWork)
+        public PiggyBankController(UserManager<User> userManager, BankContext context, IPiggyBankService piggyBankService)
         {
             if(userManager == null)
             {
@@ -60,15 +55,9 @@ namespace BankApp.WEB.Controllers
                 throw new ArgumentNullException(nameof(piggyBankService), "was null.");
             }
 
-            if(unitOfWork == null)
-            {
-                throw new ArgumentNullException(nameof(unitOfWork), "was null.");
-            }
-
             this.userManager = userManager;
             db = context;
             this.piggyBankService = piggyBankService;
-            this.unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -90,7 +79,7 @@ namespace BankApp.WEB.Controllers
                 WithdrawSum = 0.0m
             };
 
-            return View(piggyBankViewModel);
+            return View("Index", piggyBankViewModel);
         }
 
         /// <summary>
@@ -99,7 +88,7 @@ namespace BankApp.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Withdraw(PiggyBankViewModel piggyBankViewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrWhiteSpace(piggyBankViewModel.CardNumber))
             {
                 var currentUser = await userManager.GetUserAsync(User);
                 if (currentUser != null)
@@ -117,20 +106,27 @@ namespace BankApp.WEB.Controllers
                     //Creating piggy bank DTO
                     var piggyBankDTO = mapper.Map<PiggyBankViewModel, PiggyBankDTO>(piggyBankViewModel);
 
-                    var piggyBank = await unitOfWork.PiggyBankRepository.GetByIdAsync(piggyBankViewModel.PiggyBankId);
+                    var piggyBank = await db.PiggyBanks.Include(p => p.User).FirstOrDefaultAsync(p => p.Id == piggyBankViewModel.PiggyBankId);
                     piggyBankDTO.PiggyBank = piggyBank;
 
                     var result = await piggyBankService.WithdrawMoneyFromPiggyBankAsync(piggyBankDTO);
-                    if (result.Successed)
+                    if (result != null)
                     {
-                        return RedirectToAction("Index", "Profile");
+                        if (result.Successed)
+                        {
+                            return RedirectToAction("Index", "Profile");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, result.Message);
+
+                            piggyBankViewModel.User = userInDb;
+                            return View("Index", piggyBankViewModel);
+                        }
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, result.Message);
-
-                        piggyBankViewModel.User = userInDb;
-                        return View("Index", piggyBankViewModel);
+                        return Content("Bad request");
                     }
                 }
                 else

@@ -23,17 +23,8 @@ namespace BankApp.Tests.Tests
         private async Task HomeIndexMethodReturnsView()
         {
             //Arrange
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var mockService = new Mock<IHomeService>();
-            var homeController = new HomeController(mockService.Object, mockUserManager.Object);
+            var resultOfMocks = GetMocks();
+            var homeController = new HomeController(resultOfMocks.homeServiceMock.Object, resultOfMocks.userManager.Object);
 
             //Act
             var result = await homeController.Index() as ViewResult;
@@ -47,17 +38,8 @@ namespace BankApp.Tests.Tests
         private async Task SendMessageMethodReturnBadModelState()
         {
             //Arrange
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var mockService = new Mock<IHomeService>();
-            var homeController = new HomeController(mockService.Object, mockUserManager.Object);
+            var resultOfMocks = GetMocks();
+            var homeController = new HomeController(resultOfMocks.homeServiceMock.Object, resultOfMocks.userManager.Object);
 
             var multiplyHomeModels = new MultiplyHomeModels()
             {
@@ -77,20 +59,11 @@ namespace BankApp.Tests.Tests
         private async Task SendMessageMethodReturnsBadRequestContent()
         {
             //Arrange 
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var mockService = new Mock<IHomeService>();
+            var resultOfMocks = GetMocks();
             var dbMock = new Mock<BankContext>();
             var userMessageDTOMock = new Mock<UserMessageDTO>();
-            mockService.Setup(m => m.SaveUserMessageInDbAsync(userMessageDTOMock.Object)).ReturnsAsync(new OperationSuccessed("Message is not saved", false));
-            var homeController = new HomeController(mockService.Object, mockUserManager.Object);
+            resultOfMocks.homeServiceMock.Setup(m => m.SaveUserMessageInDbAsync(userMessageDTOMock.Object)).ReturnsAsync(new OperationSuccessed("Message is not saved", false));
+            var homeController = new HomeController(resultOfMocks.homeServiceMock.Object, resultOfMocks.userManager.Object);
 
             var multiplyHomeModels = new MultiplyHomeModels()
             {
@@ -106,7 +79,23 @@ namespace BankApp.Tests.Tests
             Assert.Equal("Bad request", result?.Content);
         }
 
-        private User GetUser()
+        private static (Mock<UserManager<User>> userManager, Mock<IHomeService> homeServiceMock, ClaimsPrincipal user) GetMocks()
+        {
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+            }));
+
+            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
+            var mockService = new Mock<IHomeService>();
+
+            return (mockUserManager, mockService, user);
+        }
+
+        private static User GetUser()
         {
             return new User()
             {

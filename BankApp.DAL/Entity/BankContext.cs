@@ -18,22 +18,22 @@ namespace BankApp.DAL.Entity
         /// <summary>
         /// User messages
         /// </summary>
-        public DbSet<UserMessage> Messages { get; set; }
+        public virtual DbSet<UserMessage> Messages { get; set; }
 
         /// <summary>
         /// Histories
         /// </summary>
-        public DbSet<History> Histories { get; set; }
+        public virtual DbSet<History> Histories { get; set; }
 
         /// <summary>
         /// Wallets
         /// </summary>
-        public DbSet<Wallet> Wallets { get; set; }
+        public virtual DbSet<Wallet> Wallets { get; set; }
 
         /// <summary>
         /// Piggy banks
         /// </summary>
-        public DbSet<PiggyBank> PiggyBanks { get; set; }
+        public virtual DbSet<PiggyBank> PiggyBanks { get; set; }
 
         public BankContext()
         {

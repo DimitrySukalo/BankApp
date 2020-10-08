@@ -21,17 +21,8 @@ namespace BankApp.Tests.Tests
         private void ChangePhoneMethodReturnsView()
         {
             //Arrange
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var settingMock = new Mock<ISettingService>();
-            var changePhoneController = new ChangePhoneController(settingMock.Object, mockUserManager.Object);
+            var resultOfMocks = GetMocks();
+            var changePhoneController = new ChangePhoneController(resultOfMocks.settingMock.Object, resultOfMocks.userManager.Object);
 
             var rnd = new Random();
             var phone = rnd.Next(0, 9999999).ToString();
@@ -50,7 +41,7 @@ namespace BankApp.Tests.Tests
             Assert.Equal("ChangePhone", result?.ViewName);
         }
 
-        private User GetUser()
+        private static User GetUser()
         {
             return new User()
             {
@@ -65,23 +56,15 @@ namespace BankApp.Tests.Tests
         [Fact]
         private void ChangePhoneReturnsViewPage()
         {
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+            var resultOfMocks = GetMocks();
 
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var settingMock = new Mock<ISettingService>();
-            var changePhoneController = new ChangePhoneController(settingMock.Object, mockUserManager.Object)
+            var changePhoneController = new ChangePhoneController(resultOfMocks.settingMock.Object, resultOfMocks.userManager.Object)
             {
                 ControllerContext = new ControllerContext()
                 {
                     HttpContext = new DefaultHttpContext()
                     {
-                        User = user
+                        User = resultOfMocks.user
                     }
                 }
             };
@@ -92,6 +75,22 @@ namespace BankApp.Tests.Tests
             //Assert
             Assert.NotNull(result);
             Assert.Equal("ChangePhone", result?.ViewName);
+        }
+
+        private static (Mock<UserManager<User>> userManager, Mock<ISettingService> settingMock, ClaimsPrincipal user) GetMocks()
+        {
+            var mockUserStore = new Mock<IUserStore<User>>();
+            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
+
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, "1"),
+            }));
+
+            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
+            var settingMock = new Mock<ISettingService>();
+
+            return (mockUserManager, settingMock, user);
         }
     }
 }

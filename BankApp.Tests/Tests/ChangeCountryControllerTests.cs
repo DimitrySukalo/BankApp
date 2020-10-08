@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
 using MockQueryable.Moq;
 using Moq;
 using System.Collections.Generic;
@@ -27,6 +26,39 @@ namespace BankApp.Tests.Tests
         private void ChangeCountryGetMethodReturnsView()
         {
             //Arrange
+            var resultOfMocks = GetMocks();
+
+            var users = GetUsers().AsQueryable().BuildMock();
+            SetSettingsInDb(resultOfMocks.userMock, users);
+
+            var countries = GetCountries().AsQueryable().BuildMock();
+            SetSettingsInDb(resultOfMocks.countryMock, countries);
+
+            resultOfMocks.dbMock.Setup(m => m.Users).Returns(resultOfMocks.userMock.Object);
+            resultOfMocks.dbMock.Setup(m => m.Countries).Returns(resultOfMocks.countryMock.Object);
+
+            var changeCountryController = new ChangeCountryController(resultOfMocks.settingMock.Object, resultOfMocks.userManager.Object, resultOfMocks.dbMock.Object)
+            {
+                ControllerContext = new ControllerContext()
+                {
+                    HttpContext = new DefaultHttpContext()
+                    {
+                        User = resultOfMocks.user
+                    }
+                }
+            };
+
+            //Act
+            var result = changeCountryController.ChangeCountry().Result as ViewResult;
+
+            //Assert
+            Assert.NotNull(result);
+            Assert.Equal("ChangeCountry", result?.ViewName);
+        }
+
+        private static (Mock<UserManager<User>> userManager, Mock<ISettingService> settingMock,
+                        Mock<DbSet<User>> userMock, Mock<DbSet<Country>> countryMock, Mock<BankContext> dbMock, ClaimsPrincipal user) GetMocks()
+        {
             var mockUserStore = new Mock<IUserStore<User>>();
             var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
 
@@ -41,55 +73,14 @@ namespace BankApp.Tests.Tests
             var countryMock = new Mock<DbSet<Country>>();
             var dbMock = new Mock<BankContext>();
 
-            var users = GetUsers().AsQueryable().BuildMock();
-            userMock.As<IQueryable<User>>().Setup(m => m.Provider).Returns(users.Object.Provider);
-            userMock.As<IQueryable<User>>().Setup(m => m.Expression).Returns(users.Object.Expression);
-            userMock.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(users.Object.ElementType);
-            userMock.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(users.Object.GetEnumerator());
-
-            var countries = GetCountries().AsQueryable().BuildMock();
-            countryMock.As<IQueryable<Country>>().Setup(m => m.Provider).Returns(countries.Object.Provider);
-            countryMock.As<IQueryable<Country>>().Setup(m => m.Expression).Returns(countries.Object.Expression);
-            countryMock.As<IQueryable<Country>>().Setup(m => m.ElementType).Returns(countries.Object.ElementType);
-            countryMock.As<IQueryable<Country>>().Setup(m => m.GetEnumerator()).Returns(countries.Object.GetEnumerator());
-
-            dbMock.Setup(m => m.Users).Returns(userMock.Object);
-            dbMock.Setup(m => m.Countries).Returns(countryMock.Object);
-
-            var changeCountryController = new ChangeCountryController(settingMock.Object, mockUserManager.Object, dbMock.Object)
-            {
-                ControllerContext = new ControllerContext()
-                {
-                    HttpContext = new DefaultHttpContext()
-                    {
-                        User = user
-                    }
-                }
-            };
-
-            //Act
-            var result = changeCountryController.ChangeCountry().Result as ViewResult;
-
-            //Assert
-            Assert.NotNull(result);
-            Assert.Equal("ChangeCountry", result?.ViewName);
+            return (mockUserManager, settingMock, userMock, countryMock, dbMock, user);
         }
 
         [Fact]
         private void ChangeCountryReturnsBadModelState()
         {
             //Arrange
-            var mockUserStore = new Mock<IUserStore<User>>();
-            var mockUserManager = new Mock<UserManager<User>>(mockUserStore.Object, null, null, null, null, null, null, null, null);
-            var dbMock = new Mock<BankContext>();
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, "1"),
-            }));
-
-            mockUserManager.Setup(x => x.GetUserAsync(user)).ReturnsAsync(GetUser());
-            var settingMock = new Mock<ISettingService>();
+            var resultOfMocks = GetMocks();
             var changeDataViewModel = new ChangeDataViewModel()
             {
                 Country = new Country()
@@ -99,7 +90,7 @@ namespace BankApp.Tests.Tests
                 }
             };
 
-            var changeCountryController = new ChangeCountryController(settingMock.Object, mockUserManager.Object, dbMock.Object);
+            var changeCountryController = new ChangeCountryController(resultOfMocks.settingMock.Object, resultOfMocks.userManager.Object, resultOfMocks.dbMock.Object);
 
             //Act
             var result = changeCountryController.ChangeCountry(changeDataViewModel).Result as ViewResult;
@@ -109,7 +100,15 @@ namespace BankApp.Tests.Tests
             Assert.Equal("ChangeCountry", result?.ViewName);
         }
 
-        private User GetUser()
+        private static void SetSettingsInDb<T>(Mock<DbSet<T>> mock, Mock<IQueryable<T>> items) where T : class
+        {
+            mock.As<IQueryable<T>>().Setup(m => m.Provider).Returns(items.Object.Provider);
+            mock.As<IQueryable<T>>().Setup(m => m.Expression).Returns(items.Object.Expression);
+            mock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(items.Object.ElementType);
+            mock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(items.Object.GetEnumerator());
+        }
+
+        private static User GetUser()
         {
             return new User()
             {
@@ -122,7 +121,7 @@ namespace BankApp.Tests.Tests
             };
         }
 
-        private List<User> GetUsers()
+        private static List<User> GetUsers()
         {
             return new List<User>()
             {
@@ -193,7 +192,7 @@ namespace BankApp.Tests.Tests
             };
         }
 
-        private List<Country> GetCountries()
+        private static List<Country> GetCountries()
         {
             return new List<Country>()
             {
