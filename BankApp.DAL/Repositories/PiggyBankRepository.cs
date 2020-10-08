@@ -54,7 +54,7 @@ namespace BankApp.DAL.Repositories
         /// <summary>
         /// Get by id piggy bank
         /// </summary>
-        public async Task<PiggyBank> GetByIdAsync(string id)
+        public async Task<PiggyBank> GetByIdAsync(int id)
         {
             var piggyBank = await db.PiggyBanks.Include(b => b.User).FirstOrDefaultAsync(b => b.Id == id);
 

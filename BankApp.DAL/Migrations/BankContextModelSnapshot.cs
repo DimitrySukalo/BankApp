@@ -47,13 +47,23 @@ namespace BankApp.DAL.Migrations
 
             modelBuilder.Entity("BankApp.DAL.Entities.PiggyBank", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Currency")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Money")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("PiggyBanks");
                 });
@@ -353,10 +363,8 @@ namespace BankApp.DAL.Migrations
             modelBuilder.Entity("BankApp.DAL.Entities.PiggyBank", b =>
                 {
                     b.HasOne("BankApp.DAL.Entities.User", "User")
-                        .WithOne("PiggyBank")
-                        .HasForeignKey("BankApp.DAL.Entities.PiggyBank", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("PiggyBanks")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("BankApp.DAL.Entities.Wallet", b =>

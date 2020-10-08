@@ -5,6 +5,8 @@ using BankApp.DAL.Entities;
 using BankApp.DAL.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace BankApp.BLL.Services
 {
@@ -48,12 +50,38 @@ namespace BankApp.BLL.Services
                 var user = mapper.Map<UserRegisterDTO, User>(userDTO);
 
                 if(user != null)
-                { 
-                    user.PiggyBank = new PiggyBank()
+                {
+                    #region Creating piggy banks
+
+                    user.PiggyBanks = new List<PiggyBank>()
                     {
-                        User = user,
-                        Money = 0.0m
+                        new PiggyBank()
+                        {
+                            Currency = Currencies.UAH,
+                            Money = 0.0m,
+                            User = user
+                        },
+                        new PiggyBank()
+                        {
+                            Currency = Currencies.RUB,
+                            Money = 0.0m,
+                            User = user
+                        },
+                        new PiggyBank()
+                        {
+                            Currency = Currencies.EUR,
+                            Money = 0.0m,
+                            User = user
+                        },
+                        new PiggyBank()
+                        {
+                            Currency = Currencies.USD,
+                            Money = 0.0m,
+                            User = user
+                        }
                     };
+
+                    #endregion
 
                     //Result of user registration
                     var result = UnitOfWork.UserManager.CreateAsync(user, user.Password).Result;

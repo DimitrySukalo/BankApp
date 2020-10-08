@@ -39,5 +39,10 @@ namespace BankApp.DAL.Interfaces
         /// Remove wallet from the database by id 
         /// </summary>
         Task RemoveWalletByIdAsync(int id);
+
+        /// <summary>
+        /// Get wallet by number
+        /// </summary>
+        Task<Wallet> GetByNumberAsync(string number);
     }
 }

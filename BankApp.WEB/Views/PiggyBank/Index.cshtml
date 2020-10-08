@@ -17,22 +17,70 @@
                 <form method="post" asp-action="Withdraw" asp-controller="PiggyBank">
                     <div class="piggy-bank__content">
                         <div asp-validation-summary="All" style="font-weight: 400; color: red;"></div>
-                        <p class="mt-5">On your account: @Model.User.PiggyBank.Money</p>
-
-                        <div>
-                            <p class="mt-3">Enter the amount you want to withdraw</p>
-                            <input class="form-control mt-2" asp-for="WithdrawSum" />
+                        <div class="mt-5">
+                            On your account:
+                            @foreach (var pb in Model.User.PiggyBanks)
+                            {
+                                if (pb.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                                {
+                                    <p>EUR: @pb.Money</p>
+                                }
+                                else if (pb.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                                {
+                                    <p>RUB: @pb.Money</p>
+                                }
+                                else if (pb.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                                {
+                                    <p>UAH: @pb.Money</p>
+                                }
+                                else if (pb.Currency == BankApp.DAL.Entities.Currencies.USD)
+                                {
+                                    <p>USD: @pb.Money</p>
+                                }
+                            }
                         </div>
 
-                        <div>
-                            <p class="mt-3">Enter the card number</p>
-                            <input class="form-control mt-2" asp-for="CardNumber" />
+                        <div class="mt-3">
+                            <p>Select your piggy bank</p>
+                            <select class="custom-select" asp-for="PiggyBankId" style="margin-bottom: 20px;">
+                                @foreach (var item in Model.User.PiggyBanks)
+                                {
+                                    if (item.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                                    {
+                                        <option value="@item.Id">EUR</option>
+                                    }
+                                    else if (item.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                                    {
+                                        <option value="@item.Id">RUB</option>
+                                    }
+                                    else if (item.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                                    {
+                                        <option value="@item.Id">UAH</option>
+                                    }
+                                    else if (item.Currency == BankApp.DAL.Entities.Currencies.USD)
+                                    {
+                                        <option value="@item.Id">USD</option>
+                                    }
+                                }
+                            </select>
                         </div>
 
-                        <button class="widthdraw__money btn btn-sm btn-primary mt-5" type="submit">
-                            Withdraw
-                        </button>
-                    </div>
+                            <div>
+                                <p class="mt-3">Enter the amount you want to withdraw</p>
+                                <input class="form-control mt-2" asp-for="WithdrawSum" />
+                            </div>
+
+                            <div>
+                                <p class="mt-3">Enter the card number</p>
+                                <input class="form-control mt-2" asp-for="CardNumber" />
+                            </div>
+                            <a asp-action="Index" asp-controller="Profile" class="back btn btn-sm btn-primary mt-5 mr-3">
+                                Back
+                            </a>
+                            <button class="widthdraw__money btn btn-sm btn-primary mt-5" type="submit">
+                                Withdraw
+                            </button>
+                        </div>
                 </form>
             </div>
         </header>

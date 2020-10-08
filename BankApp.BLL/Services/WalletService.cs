@@ -6,6 +6,7 @@ using BankApp.DAL.Interfaces;
 using BankApp.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BankApp.BLL.Services
@@ -95,10 +96,11 @@ namespace BankApp.BLL.Services
             if(wallet != null)
             {
                 var user = wallet.User;
-                var userInDb = await UnitOfWork.Database.Users.Include(u => u.PiggyBank).FirstOrDefaultAsync(u => u.Id == user.Id);
+                var userInDb = await UnitOfWork.Database.Users.Include(u => u.PiggyBanks).FirstOrDefaultAsync(u => u.Id == user.Id);
                 if(userInDb != null)
                 {
-                    userInDb.PiggyBank.Money = wallet.Money;
+                    var piggyBank = userInDb.PiggyBanks.FirstOrDefault(pb => pb.Currency == wallet.Currency);
+                    piggyBank.Money += wallet.Money;
                 }
             }
             await UnitOfWork.WalletRepository.RemoveWalletByIdAsync(id);

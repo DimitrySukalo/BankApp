@@ -79,6 +79,29 @@ namespace BankApp.DAL.Repositories
         }
 
         /// <summary>
+        /// Get wallet by number
+        /// </summary>
+        public async Task<Wallet> GetByNumberAsync(string number)
+        {
+            if(!string.IsNullOrWhiteSpace(number))
+            {
+                var wallet = await db.Wallets.Include(w => w.User).FirstOrDefaultAsync(w => w.Number == number);
+                if (wallet != null)
+                {
+                    return wallet;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Get wallet by id
         /// </summary>
         public async Task<Wallet> GetWalletByIdAsync(int id)

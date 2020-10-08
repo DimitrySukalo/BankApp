@@ -25,6 +25,6 @@ namespace BankApp.DAL.Interfaces
         /// <summary>
         /// Get by id piggy bank
         /// </summary>
-        Task<PiggyBank> GetByIdAsync(string id);
+        Task<PiggyBank> GetByIdAsync(int id);
     }
 }

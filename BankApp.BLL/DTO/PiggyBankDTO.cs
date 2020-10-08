@@ -1,12 +1,11 @@
 ﻿using BankApp.DAL.Entities;
-using System.ComponentModel.DataAnnotations;
 
-namespace BankApp.PL.ViewModels
+namespace BankApp.BLL.DTO
 {
     /// <summary>
-    /// Piggy bank view model
+    /// Piggy bank dto
     /// </summary>
-    public class PiggyBankViewModel
+    public class PiggyBankDTO
     {
         /// <summary>
         /// Current user in the session
@@ -16,19 +15,16 @@ namespace BankApp.PL.ViewModels
         /// <summary>
         /// Sum which user want to withdraw
         /// </summary>
-        [Required(ErrorMessage = "Sum is not inputed.")]
         public decimal WithdrawSum { get; set; }
 
         /// <summary>
         /// User's card number
         /// </summary>
-        [Required(ErrorMessage = "Card number is not inputed.")]
         public string CardNumber { get; set; }
 
         /// <summary>
-        /// Piggy bank id
+        /// Piggy bank
         /// </summary>
-        [Required(ErrorMessage = "Select your piggy bank")]
-        public int PiggyBankId { get; set; }
+        public PiggyBank PiggyBank { get; set; }
     }
 }
