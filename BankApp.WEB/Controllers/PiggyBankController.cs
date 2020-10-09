@@ -126,12 +126,12 @@ namespace BankApp.WEB.Controllers
                     }
                     else
                     {
-                        return Content("Bad request");
+                        return Content("Bad response");
                     }
                 }
                 else
                 {
-                    return Content("Error 404");
+                    return Content("Bad response");
                 }
             }
             else

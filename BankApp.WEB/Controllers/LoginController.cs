@@ -73,7 +73,7 @@ namespace BankApp.WEB.Controllers
                 }
                 else
                 {
-                    return Content("Error");
+                    return Content("Bad response");
                 }
             }
             else
