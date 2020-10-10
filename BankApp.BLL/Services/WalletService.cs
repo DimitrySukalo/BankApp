@@ -53,6 +53,16 @@ namespace BankApp.BLL.Services
                 //Adding wallet to the database
                 await UnitOfWork.WalletRepository.AddWalletAsync(wallet);
 
+                var historyOfCreating = new History()
+                {
+                    Created = DateTime.Now,
+                    HistoryType = HistoryType.Creating,
+                    Message = "Wallet have been created",
+                    Wallet = wallet
+                };
+
+                await UnitOfWork.HistoryRepository.AddAsync(historyOfCreating);
+
                 //Saving the database
                 await UnitOfWork.SaveAsync();
 

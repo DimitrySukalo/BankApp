@@ -1,4 +1,6 @@
-﻿namespace BankApp.DAL.Entities
+﻿using System.Collections.Generic;
+
+namespace BankApp.DAL.Entities
 {
     /// <summary>
     /// User wallet
@@ -34,5 +36,10 @@
         /// Money in the wallet
         /// </summary>
         public decimal Money { get; set; }
+
+        /// <summary>
+        /// Histories
+        /// </summary>
+        public virtual ICollection<History> Histories { get; set; }
     }
 }

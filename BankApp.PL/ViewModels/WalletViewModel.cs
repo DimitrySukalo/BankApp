@@ -51,5 +51,10 @@ namespace BankApp.PL.ViewModels
         /// Money
         /// </summary>
         public decimal Money { get; set; }
+
+        /// <summary>
+        /// Histories of wallet
+        /// </summary>
+        public IEnumerable<History> Histories { get; set; }
     }
 }

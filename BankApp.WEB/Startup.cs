@@ -58,6 +58,9 @@ namespace BankApp.WEB
             //Adding piggy bank service
             services.AddTransient<IPiggyBankService, PiggyBankService>();
 
+            //Adding history service
+            services.AddTransient<IHistoryService, HistoryService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

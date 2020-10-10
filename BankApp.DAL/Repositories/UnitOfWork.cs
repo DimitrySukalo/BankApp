@@ -43,6 +43,11 @@ namespace BankApp.DAL.Repositories
         private PiggyBankRepository piggyBankRepository;
 
         /// <summary>
+        /// History repository
+        /// </summary>
+        private HistoryRepository historyRepository;
+
+        /// <summary>
         /// Initialization
         /// </summary>
         public UnitOfWork(UserManager<User> userManager, SignInManager<User> signInManager, BankContext context)
@@ -112,6 +117,23 @@ namespace BankApp.DAL.Repositories
                 }
 
                 return piggyBankRepository;
+            }
+        }
+
+
+        /// <summary>
+        /// History repository
+        /// </summary>
+        public IHistoryRepository HistoryRepository
+        {
+            get
+            {
+                if(historyRepository == null)
+                {
+                    historyRepository = new HistoryRepository(Database);
+                }
+
+                return historyRepository;
             }
         }
 

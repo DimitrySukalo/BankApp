@@ -14,6 +14,11 @@ namespace BankApp.WEB.Controllers
     public class ProfileController : Controller
     {
         /// <summary>
+        /// History service
+        /// </summary>
+        private readonly IHistoryService historyService;
+
+        /// <summary>
         /// Wallet service
         /// </summary>
         private readonly IWalletService walletService;
@@ -21,13 +26,19 @@ namespace BankApp.WEB.Controllers
         /// <summary>
         /// Initialization
         /// </summary>
-        public ProfileController(IWalletService walletService)
+        public ProfileController(IWalletService walletService, IHistoryService historyService)
         {
             if(walletService == null)
             {
                 throw new ArgumentNullException(nameof(walletService), " was null.");
             }
 
+            if (historyService == null)
+            {
+                throw new ArgumentNullException(nameof(historyService), " was null.");
+            }
+
+            this.historyService = historyService;
             this.walletService = walletService;
         }
 
@@ -43,11 +54,13 @@ namespace BankApp.WEB.Controllers
             
             //Getting all user wallets from the database
             var wallets = await walletService.UnitOfWork.WalletRepository.GetAllUserWalletsAync(user);
+            var histories = await historyService.GeAllHistories();
 
             //Making wallet view model
             var walletViewModel = new WalletViewModel()
             {
-                Wallets = wallets
+                Wallets = wallets,
+                Histories = histories
             };
 
             //Returning profile page for user

@@ -59,7 +59,7 @@
                         </li>
                         <li class="wallet__action">
                             <img class="wallet__icon" src="~/img/history.png" />
-                            <a asp-action="Index" asp-controller="History">All operations</a>
+                            <a class="show__history" href="#">All operations</a>
                         </li>
                         <li class="wallet__action">
                             <img class="wallet__icon" src="~/img/currency.png" />
@@ -74,77 +74,124 @@
         <div class="container">
             <div class="card__content">
                 <h1 class="card__title">Your cards</h1>
-                @if(Model.Wallets.Count() == 0)
+                @if (Model.Wallets.Count() == 0)
                 {
                     <p class="no-card__text">You don't have any cards</p>
                 }
-            <table class="table">
-                @foreach (var wallet in Model.Wallets)
-                {
-                    @if (wallet.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                <table class="table">
+                    @foreach (var wallet in Model.Wallets)
                     {
-                        <tr>
-                            <th>
-                                <div class="card__eur">
-                                    <p class="data">@wallet.Number</p>
-                                </div>
-                            </th>
-                            <th>
-                                <p>Money: @wallet.Money EUR</p>
-                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
-                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
-                            </th>
-                        </tr>
+                        @if (wallet.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                        {
+                            <tr>
+                                <th>
+                                    <div class="card__eur">
+                                        <p class="data">@wallet.Number</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <p>Money: @wallet.Money EUR</p>
+                                    <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                </th>
+                            </tr>
+                        }
+                        else if (wallet.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                        {
+                            <tr>
+                                <th>
+                                    <div class="card__rub">
+                                        <p class="data">@wallet.Number</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <p>Money: @wallet.Money RUB</p>
+                                    <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                </th>
+                            </tr>
+                        }
+                        else if (wallet.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                        {
+                            <tr>
+                                <th>
+                                    <div class="card__uan">
+                                        <p class="data">@wallet.Number</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <p>Money: @wallet.Money UAH</p>
+                                    <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                </th>
+                            </tr>
+                        }
+                        else if (wallet.Currency == BankApp.DAL.Entities.Currencies.USD)
+                        {
+                            <tr>
+                                <th>
+                                    <div class="card__usd">
+                                        <p class="data">@wallet.Number</p>
+                                    </div>
+                                </th>
+                                <th>
+                                    <p>Money: @wallet.Money USD</p>
+                                    <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
+                                </th>
+                            </tr>
+                        }
                     }
-                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.RUB)
-                    {
-                        <tr>
-                            <th>
-                                <div class="card__rub">
-                                    <p class="data">@wallet.Number</p>
-                                </div>
-                            </th>
-                            <th>
-                                <p>Money: @wallet.Money RUB</p>
-                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
-                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
-                            </th>
-                        </tr>
-                    }
-                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.UAH)
-                    {
-                        <tr>
-                            <th>
-                                <div class="card__uan">
-                                    <p class="data">@wallet.Number</p>
-                                </div>
-                            </th>
-                            <th>
-                                <p>Money: @wallet.Money UAH</p>
-                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
-                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
-                            </th>
-                        </tr>
-                    }
-                    else if (wallet.Currency == BankApp.DAL.Entities.Currencies.USD)
-                    {
-                        <tr>
-                            <th>
-                                <div class="card__usd">
-                                    <p class="data">@wallet.Number</p>
-                                </div>
-                            </th>
-                            <th>
-                                <p>Money: @wallet.Money USD</p>
-                                <p>Owner: @wallet.User.FirstName @wallet.User.LastName</p>
-                                <a asp-action="ShowHistory" asp-controller="Wallet" asp-route-walletId="@wallet.Id">Show last operations</a>
-                            </th>
-                        </tr>
-                    }
-                }
-            </table>
+                </table>
             </div>
         </div>
     </section>
+
+    <div class="modal">
+        <div class="modal__dialog">
+            <div class="modal__content">
+                <div data-close class="modal__close">&times;</div>
+                @if (Model.Histories.Count() == 0)
+                {
+                    <h1>Your wallet dont have any history</h1>
+                }
+                else
+                {
+                    <h1>History</h1>
+                    <table class="table">
+                        @foreach (var history in Model.Histories)
+                        {
+                            @if (history.HistoryType == BankApp.DAL.Entities.HistoryType.AddMoney)
+                            {
+                                <tr style="background: #08e048; color:white">
+                                    <th>@history.Message</th>
+                                    <th>@history.Created</th>
+                                </tr>
+                            }
+                            else if (history.HistoryType == BankApp.DAL.Entities.HistoryType.Widthdraw)
+                            {
+                                <tr style=" background: #f32f2f; color: white">
+                                    <th>@history.Message</th>
+                                    <th>@history.Created</th>
+                                </tr>
+                            }
+                            else if (history.HistoryType == BankApp.DAL.Entities.HistoryType.Transaction)
+                            {
+                                <tr style="background: #13e65f; color:white">
+                                    <th>@history.Message</th>
+                                    <th>@history.Created</th>
+                                </tr>
+                            }
+                            else if (history.HistoryType == BankApp.DAL.Entities.HistoryType.Creating)
+                            {
+                                <tr style="background: #08e048; color:white">
+                                    <th>@history.Message</th>
+                                    <th>@history.Created</th>
+                                </tr>
+                            }
+                        }
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script src="~/js/site.js"></script>
 </body>
 </html>

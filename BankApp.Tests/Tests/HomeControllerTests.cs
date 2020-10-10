@@ -76,7 +76,7 @@ namespace BankApp.Tests.Tests
 
             //Assert
             Assert.NotNull(result);
-            Assert.Equal("Bad request", result?.Content);
+            Assert.Equal("Bad response", result?.Content);
         }
 
         private static (Mock<UserManager<User>> userManager, Mock<IHomeService> homeServiceMock, ClaimsPrincipal user) GetMocks()

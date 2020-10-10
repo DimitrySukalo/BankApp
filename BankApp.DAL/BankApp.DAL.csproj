@@ -5,25 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200926110839_AddedPiggyBank.cs" />
-    <Compile Remove="Migrations\20200926110839_AddedPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007221633_ChangedPiggyBank.cs" />
-    <Compile Remove="Migrations\20201007221633_ChangedPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007222738_ChangeId.cs" />
-    <Compile Remove="Migrations\20201007222738_ChangeId.Designer.cs" />
-    <Compile Remove="Migrations\20201007222853_ChangedPiggyBank.cs" />
-    <Compile Remove="Migrations\20201007222853_ChangedPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007223200_ChangedIdOfPiggyBank.cs" />
-    <Compile Remove="Migrations\20201007223200_ChangedIdOfPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007225348_AddedCurencyToPiggyBank.cs" />
-    <Compile Remove="Migrations\20201007225348_AddedCurencyToPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007225436_AddedCurencyToPiggyBank.cs" />
-    <Compile Remove="Migrations\20201007225436_AddedCurencyToPiggyBank.Designer.cs" />
-    <Compile Remove="Migrations\20201007225546_ChangedId.cs" />
-    <Compile Remove="Migrations\20201007225546_ChangedId.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Repositories\PiggyBankRepository.cs~RF5388cd47.TMP" />
   </ItemGroup>
 

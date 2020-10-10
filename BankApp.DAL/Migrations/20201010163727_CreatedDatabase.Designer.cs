@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankApp.DAL.Migrations
 {
     [DbContext(typeof(BankContext))]
-    [Migration("20201007230225_CreatingDatabase")]
-    partial class CreatingDatabase
+    [Migration("20201010163727_CreatedDatabase")]
+    partial class CreatedDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -356,7 +356,7 @@ namespace BankApp.DAL.Migrations
             modelBuilder.Entity("BankApp.DAL.Entities.History", b =>
                 {
                     b.HasOne("BankApp.DAL.Entities.Wallet", "Wallet")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -7,6 +7,7 @@
     {
         AddMoney = 1,
         Widthdraw = 2,
-        Transaction = 3
+        Transaction = 3,
+        Creating = 4
     }
 }

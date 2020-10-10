@@ -38,6 +38,11 @@ namespace BankApp.DAL.Interfaces
         IPiggyBankRepository PiggyBankRepository { get; }
 
         /// <summary>
+        /// History repository
+        /// </summary>
+        IHistoryRepository HistoryRepository { get; }
+
+        /// <summary>
         /// Save data async
         /// </summary>
         /// <returns></returns>

@@ -354,7 +354,7 @@ namespace BankApp.DAL.Migrations
             modelBuilder.Entity("BankApp.DAL.Entities.History", b =>
                 {
                     b.HasOne("BankApp.DAL.Entities.Wallet", "Wallet")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("WalletId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
