@@ -1,12 +1,15 @@
 ﻿'use strict';
 
 window.addEventListener('DOMContentLoaded', () => {
-    const closeModal = document.querySelector('[data-close]'),
+    const closeModals = document.querySelectorAll('[data-close]'),
         showHistoryBtn = document.querySelector('.show__history'),
-        modalHistory = document.querySelector('.modal');
+        showRatesBtn = document.querySelector('.exchange__btn'),
+        modals = document.querySelectorAll('.modal');
 
-    function hideModals(modal) {
-        modal.style.display = 'none';
+    function hideModals(modals) {
+        modals.forEach(item => {
+            item.style.display = 'none';
+        });
         document.body.style.overflow = '';
     }
 
@@ -18,13 +21,28 @@ window.addEventListener('DOMContentLoaded', () => {
     showHistoryBtn.addEventListener('click', e => {
         e.preventDefault();
 
-        showModal(modalHistory);
+        modals.forEach(item => {
+            if (item.classList.contains('history__modal')) {
+                showModal(item);
+            }
+        });
     });
 
-    closeModal.addEventListener('click', e => {
+    showRatesBtn.addEventListener('click', e => {
         e.preventDefault();
 
-        hideModals(modalHistory);
+        modals.forEach(item => {
+            if (item.classList.contains('exchange__modal')) {
+                showModal(item);
+            }
+        });
     });
 
+    closeModals.forEach(item => {
+        item.addEventListener('click', e => {
+            e.preventDefault();
+
+            hideModals(modals);
+        });
+    });
 });

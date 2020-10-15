@@ -63,7 +63,7 @@
                         </li>
                         <li class="wallet__action">
                             <img class="wallet__icon" src="~/img/currency.png" />
-                            <a asp-action="Index" asp-controller="Rates">Currency rates</a>
+                            <a class="exchange__btn" href="#">Currency rates</a>
                         </li>
                     </ul>
                 </div>
@@ -143,7 +143,7 @@
         </div>
     </section>
 
-    <div class="modal">
+    <div class="modal history__modal">
         <div class="modal__dialog">
             <div class="modal__content">
                 <div data-close class="modal__close">&times;</div>
@@ -188,6 +188,44 @@
                         }
                     </table>
                 }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal exchange__modal">
+        <div class="modal__dialog">
+            <div class="modal__content">
+                <div data-close class="modal__close">&times;</div>
+                <div class="text-center">
+                    <h1 style="text-align: center;">Курсы валют</h1>
+                    <table style="margin-left: 320px;">
+                        <tr>
+                            <th>Валюта</th>
+                            <th>Покупка</th>
+                            <th>Продажа</th>
+                        </tr>
+                        @foreach (var exchangeRate in Model.ExchangeRates)
+                        {
+                            <tr>
+                                <th style="padding: 30px;">@exchangeRate.Key</th>
+                                @if (exchangeRate.Key == "BTC")
+                                {
+                                    @foreach (var values in exchangeRate.Value)
+                                    {
+                                        <th>@values $</th>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var values in exchangeRate.Value)
+                                    {
+                                        <th>@values грн</th>
+                                    }
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
             </div>
         </div>
     </div>

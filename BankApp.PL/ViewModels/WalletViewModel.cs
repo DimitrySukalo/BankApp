@@ -56,5 +56,10 @@ namespace BankApp.PL.ViewModels
         /// Histories of wallet
         /// </summary>
         public IEnumerable<History> Histories { get; set; }
+
+        /// <summary>
+        /// Exchange rates
+        /// </summary>
+        public Dictionary<string, List<decimal>> ExchangeRates { get; set; }
     }
 }

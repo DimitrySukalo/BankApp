@@ -61,6 +61,9 @@ namespace BankApp.WEB
             //Adding history service
             services.AddTransient<IHistoryService, HistoryService>();
 
+            //Adding currency service
+            services.AddTransient<ICurrencyRatesService, CurrencyRatesService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

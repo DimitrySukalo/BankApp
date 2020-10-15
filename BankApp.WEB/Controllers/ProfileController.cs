@@ -24,9 +24,14 @@ namespace BankApp.WEB.Controllers
         private readonly IWalletService walletService;
 
         /// <summary>
+        /// Currency rates
+        /// </summary>
+        private readonly ICurrencyRatesService currencyRates;
+
+        /// <summary>
         /// Initialization
         /// </summary>
-        public ProfileController(IWalletService walletService, IHistoryService historyService)
+        public ProfileController(IWalletService walletService, IHistoryService historyService, ICurrencyRatesService ratesService)
         {
             if(walletService == null)
             {
@@ -38,8 +43,14 @@ namespace BankApp.WEB.Controllers
                 throw new ArgumentNullException(nameof(historyService), " was null.");
             }
 
+            if(ratesService == null)
+            {
+                throw new ArgumentNullException(nameof(ratesService), " was null.");
+            }
+
             this.historyService = historyService;
             this.walletService = walletService;
+            currencyRates = ratesService;
         }
 
         /// <summary>
@@ -55,12 +66,14 @@ namespace BankApp.WEB.Controllers
             //Getting all user wallets from the database
             var wallets = await walletService.UnitOfWork.WalletRepository.GetAllUserWalletsAync(user);
             var histories = await historyService.GeAllHistories();
+            var exchangeRates = await currencyRates.GetCurrencyRatesBuy();
 
             //Making wallet view model
             var walletViewModel = new WalletViewModel()
             {
                 Wallets = wallets,
-                Histories = histories
+                Histories = histories,
+                ExchangeRates = exchangeRates
             };
 
             //Returning profile page for user
