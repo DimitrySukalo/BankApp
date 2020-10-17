@@ -1,0 +1,61 @@
+﻿@model BankApp.PL.ViewModels.TransactionViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css2?family=Khand:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <title>Transact</title>
+
+</head>
+<body>
+    <form method="post" asp-action="MakeTransaction" asp-controller="Transact">
+        <div class="back__image">
+            <div class="container text-center" style="background: #fff; min-height: 100vh;">
+                <div class="validation" asp-validation-summary="ModelOnly" style="color: red; font-weight: 400;"></div>
+                <div>
+                    <span><b>Choose ypur wallet</b></span>
+                    <select class="custom-select" asp-for="WalletFromId" style="margin-bottom: 20px;">
+                        @foreach (var wallet in Model.Wallets)
+                        {
+                            if (wallet.Currency == BankApp.DAL.Entities.Currencies.EUR)
+                            {
+                                <option value="@wallet.Id">EUR</option>
+                            }
+                            else if (wallet.Currency == BankApp.DAL.Entities.Currencies.RUB)
+                            {
+                                <option value="@wallet.Id">RUB</option>
+                            }
+                            else if (wallet.Currency == BankApp.DAL.Entities.Currencies.UAH)
+                            {
+                                <option value="@wallet.Id">UAH</option>
+                            }
+                            else if (wallet.Currency == BankApp.DAL.Entities.Currencies.USD)
+                            {
+                                <option value="@wallet.Id">USD</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div>
+                    <span><b>Enter recipient's wallet number</b></span>
+                    <input class="form-control" asp-for="WalletToNumber" type="text" style="margin-bottom: 20px;" />
+                </div>
+
+                <div>
+                    <span><b>Enter sum of transaction</b></span>
+                    <input class="form-control" asp-for="SumOfTransaction" style="margin-bottom: 20px;" />
+                </div>
+
+                <button class="btn btn-sm btn-success" type="submit">
+                    Send money
+                </button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

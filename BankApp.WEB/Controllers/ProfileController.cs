@@ -65,7 +65,7 @@ namespace BankApp.WEB.Controllers
             
             //Getting all user wallets from the database
             var wallets = await walletService.UnitOfWork.WalletRepository.GetAllUserWalletsAync(user);
-            var histories = await historyService.GeAllHistories();
+            var histories = await historyService.GetAllHistoriesOfUsersWallets(wallets);
             var exchangeRates = await currencyRates.GetCurrencyRatesBuy();
 
             //Making wallet view model

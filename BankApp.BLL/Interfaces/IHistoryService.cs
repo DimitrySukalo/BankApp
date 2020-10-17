@@ -27,5 +27,7 @@ namespace BankApp.BLL.Interfaces
         /// Get histories of wallet
         /// </summary>
         Task<List<History>> GetHistoriesOfWallet(int walletId);
+
+        Task<List<History>> GetAllHistoriesOfUsersWallets(List<Wallet> wallets);
     }
 }

@@ -64,6 +64,8 @@ namespace BankApp.WEB
             //Adding currency service
             services.AddTransient<ICurrencyRatesService, CurrencyRatesService>();
 
+            services.AddTransient<ITransactService, TransactService>();
+
             //Adding unit of work
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 

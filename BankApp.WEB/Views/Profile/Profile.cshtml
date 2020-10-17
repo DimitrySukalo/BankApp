@@ -45,18 +45,14 @@
                         </li>
                         <li class="wallet__action">
                             <img class="transfer__icon" src="~/img/transfer.png" />
-                            <a asp-action="MakeTransaction" asp-controller="Transaction">Transact</a>
+                            <a asp-action="Index" asp-controller="Transact">Transact</a>
                         </li>
-                        <li class="wallet__action">
-                            <img class="deposit__icon" src="~/img/deposit.png" />
-                            <a asp-action="Deposit" asp-controller="Deposit">Make deposit</a>
-                        </li>
-                    </ul>
-                    <ul class="actions">
                         <li class="wallet__action">
                             <img class="wallet__icon" src="~/img/piggyBank.png" />
                             <a asp-action="Index" asp-controller="PiggyBank">Money box</a>
                         </li>
+                    </ul>
+                    <ul class="actions">
                         <li class="wallet__action">
                             <img class="wallet__icon" src="~/img/history.png" />
                             <a class="show__history" href="#">All operations</a>

@@ -6,6 +6,7 @@ using BankApp.DAL.Interfaces;
 using BankApp.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,6 +50,7 @@ namespace BankApp.BLL.Services
                 string walletNumber = await GetWalletNumber();
 
                 wallet.Number = walletNumber;
+                wallet.Histories = new List<History>();
 
                 //Adding wallet to the database
                 await UnitOfWork.WalletRepository.AddWalletAsync(wallet);
@@ -57,11 +59,10 @@ namespace BankApp.BLL.Services
                 {
                     Created = DateTime.Now,
                     HistoryType = HistoryType.Creating,
-                    Message = "Wallet have been created",
-                    Wallet = wallet
+                    Message = "Wallet have been created"
                 };
 
-                await UnitOfWork.HistoryRepository.AddAsync(historyOfCreating);
+                wallet.Histories.Add(historyOfCreating);
 
                 //Saving the database
                 await UnitOfWork.SaveAsync();

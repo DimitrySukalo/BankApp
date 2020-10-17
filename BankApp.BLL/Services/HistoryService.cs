@@ -45,5 +45,21 @@ namespace BankApp.BLL.Services
             var histories = await UnitOfWork.HistoryRepository.GetHistoriesByWalletIdAsync(walletId);
             return histories;
         }
+
+        public async Task<List<History>> GetAllHistoriesOfUsersWallets(List<Wallet> wallets)
+        {
+            var histories = new List<History>();
+
+            foreach(var wallet in wallets)
+            {
+                var historiesOfWallet = await UnitOfWork.HistoryRepository.GetHistoriesByWalletIdAsync(wallet.Id);
+                foreach(var history in historiesOfWallet)
+                {
+                    histories.Add(history);
+                }
+            }
+
+            return histories;
+        }
     }
 }
